@@ -1,0 +1,698 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <title>КИС производственного холдинга — макеты экранов</title>
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f3f4f6;
+      color: #111827;
+    }
+
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    /* ===== Сайдбар ===== */
+    .sidebar {
+      width: 260px;
+      background: #111827;
+      color: #e5e7eb;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar-header {
+      padding: 1rem 1.25rem;
+      border-bottom: 1px solid #1f2937;
+    }
+
+    .sidebar-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin: 0 0 0.25rem;
+    }
+
+    .sidebar-subtitle {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin: 0;
+    }
+
+    .nav {
+      list-style: none;
+      padding: 0.5rem 0;
+      margin: 0;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .nav-section-title {
+      padding: 0.75rem 1.25rem 0.25rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #6b7280;
+    }
+
+    .nav-item { margin: 0; padding: 0; }
+
+    .nav-button {
+      width: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: inherit;
+      text-align: left;
+      padding: 0.5rem 1.25rem;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-button:hover { background: #1f2937; }
+
+    .nav-button.active { background: #374151; }
+
+    .nav-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #6b7280;
+    }
+
+    .nav-button.active .nav-dot {
+      background: #60a5fa;
+    }
+
+    .sidebar-footer {
+      padding: 0.75rem 1.25rem;
+      border-top: 1px solid #1f2937;
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+
+    /* ===== Основная часть ===== */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .topbar {
+      height: 56px;
+      background: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+    }
+
+    .topbar-title {
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+
+    .user-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: #374151;
+    }
+
+    .user-circle {
+      width: 24px;
+      height: 24px;
+      border-radius: 999px;
+      background: #60a5fa;
+    }
+
+    .screen-container {
+      flex: 1;
+      padding: 1.5rem;
+      overflow: auto;
+    }
+
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .page-header { margin-bottom: 1.25rem; }
+
+    .page-title {
+      margin: 0 0 0.25rem;
+      font-size: 1.4rem;
+      font-weight: 600;
+    }
+
+    .page-subtitle {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #6b7280;
+    }
+
+    /* Карточки */
+    .card {
+      background: #ffffff;
+      border-radius: 0.75rem;
+      border: 1px solid #e5e7eb;
+      padding: 1.25rem;
+      box-shadow: 0 10px 15px -10px rgba(15, 23, 42, 0.2);
+    }
+
+    .card + .card { margin-top: 1rem; }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+
+    .card-title {
+      margin: 0;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .muted { color: #9ca3af; }
+
+    .pill {
+      display: inline-block;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      padding: 0.15rem 0.55rem;
+      font-size: 0.75rem;
+      color: #4b5563;
+      background: #f9fafb;
+    }
+
+    .pill-status-new {
+      border-color: #bfdbfe;
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .pill-status-progress {
+      border-color: #fde68a;
+      background: #fffbeb;
+      color: #92400e;
+    }
+
+    .pill-status-done {
+      border-color: #bbf7d0;
+      background: #ecfdf5;
+      color: #15803d;
+    }
+
+    .pill-role {
+      border-color: #d1fae5;
+      background: #ecfdf5;
+      color: #047857;
+    }
+
+    /* Сетки */
+    .grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    @media (max-width: 960px) {
+      .app { flex-direction: column; }
+      .sidebar { width: 100%; flex-direction: row; overflow-x: auto; }
+      .sidebar-header, .sidebar-footer { display: none; }
+      .nav { display: flex; flex-wrap: nowrap; }
+      .nav-button { white-space: nowrap; }
+    }
+
+    @media (max-width: 768px) {
+      .grid-3, .grid-2 { grid-template-columns: 1fr; }
+    }
+
+    /* Таблицы */
+    .table-wrapper { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    th, td {
+      padding: 0.5rem 0.75rem;
+      border-bottom: 1px solid #e5e7eb;
+      text-align: left;
+      white-space: nowrap;
+    }
+
+    th {
+      font-weight: 600;
+      font-size: 0.8rem;
+      color: #6b7280;
+      background: #f9fafb;
+    }
+
+    tr:hover td { background: #f9fafb; }
+
+    .table-actions { display: flex; gap: 0.25rem; }
+
+    /* Формы */
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem 1rem;
+    }
+
+    .form-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      font-size: 0.85rem;
+    }
+
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      border-radius: 0.5rem;
+      border: 1px solid #d1d5db;
+      padding: 0.45rem 0.6rem;
+      background: #ffffff;
+    }
+
+    .form-actions {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* Кнопки */
+    .btn {
+      border-radius: 999px;
+      border: 1px solid transparent;
+      padding: 0.45rem 0.9rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: #ffffff;
+      border-color: #1d4ed8;
+    }
+
+    .btn-secondary {
+      background: #ffffff;
+      color: #374151;
+      border-color: #d1d5db;
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: #4b5563;
+      border-color: transparent;
+    }
+
+    /* Логин */
+    .login-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: calc(100vh - 56px);
+    }
+
+    .login-card { max-width: 420px; width: 100%; }
+
+    .login-title { margin: 0 0 0.25rem; font-size: 1.4rem; font-weight: 600; }
+    .login-subtitle { margin: 0 0 1rem; font-size: 0.9rem; color: #6b7280; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border-radius: 999px;
+      padding: 0.2rem 0.55rem;
+      font-size: 0.75rem;
+      background: #eef2ff;
+      color: #4338ca;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: #4f46e5;
+    }
+  </style>
+</head>
+
+<body>
+<div class="app">
+
+  <!-- ===== САЙДБАР ===== -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-title">КИС производственного холдинга</div>
+      <p class="sidebar-subtitle">Учебный прототип · макеты экранов</p>
+    </div>
+
+    <ul class="nav">
+
+    <!-- ===== АУТЕНТИФИКАЦИЯ ===== -->
+    <li class="nav-section-title">Аутентификация</li>
+
+    <!-- Можно без авторизации -->
+    <li class="nav-item">
+        <button class="nav-button" data-screen="screen-login">
+        <span class="nav-dot"></span>
+        Вход в систему
+        </button>
+    </li>
+
+
+    <!-- ===== РАБОТА ПОЛЬЗОВАТЕЛЯ ===== -->
+    <li class="nav-section-title">Работа пользователя</li>
+
+    <li class="nav-item">
+        <button class="nav-button" data-screen="screen-dashboard" data-requires-auth="1">
+        <span class="nav-dot"></span>
+        Дашборд
+        </button>
+    </li>
+
+    <li class="nav-item">
+        <button class="nav-button" data-screen="screen-orders-list" data-requires-auth="1">
+        <span class="nav-dot"></span>
+        Заказы (список)
+        </button>
+    </li>
+
+    <li class="nav-item">
+        <button class="nav-button" data-screen="screen-order-card" data-requires-auth="1">
+        <span class="nav-dot"></span>
+        Заказ (карточка)
+        </button>
+    </li>
+
+    <li class="nav-item">
+        <button class="nav-button" data-screen="screen-order-new" data-requires-auth="1">
+        <span class="nav-dot"></span>
+        Новый заказ
+        </button>
+    </li>
+
+    <li class="nav-item">
+        <button class="nav-button" data-screen="screen-employees-list" data-requires-auth="1">
+        <span class="nav-dot"></span>
+        Сотрудники (список)
+        </button>
+    </li>
+
+    <li class="nav-item">
+        <button class="nav-button" data-screen="screen-employee-card" data-requires-auth="1">
+        <span class="nav-dot"></span>
+        Сотрудник (карточка)
+        </button>
+    </li>
+
+    <li class="nav-item">
+        <button class="nav-button" data-screen="screen-reports-list" data-requires-auth="1">
+        <span class="nav-dot"></span>
+        Отчёты (список)
+        </button>
+    </li>
+
+    <li class="nav-item">
+        <button class="nav-button" data-screen="screen-report-new" data-requires-auth="1">
+        <span class="nav-dot"></span>
+        Создание отчёта
+        </button>
+    </li>
+
+
+    <!-- ===== АДМИНИСТРИРОВАНИЕ ===== -->
+    <li class="nav-section-title">Администрирование</li>
+
+    <li class="nav-item">
+        <button class="nav-button" data-screen="screen-admin" data-requires-auth="1">
+        <span class="nav-dot"></span>
+        Администрирование
+        </button>
+    </li>
+
+    </ul>
+
+
+    <div class="sidebar-footer">
+      Макеты для лабораторной №3 «ИСиТ».
+    </div>
+  </aside>
+
+  <!-- ===== ОСНОВНАЯ ЧАСТЬ ===== -->
+  <main class="main">
+    <header class="topbar">
+    <div class="topbar-title">Прототип интерфейса · макеты экранов</div>
+
+    <div style="display:flex; align-items:center; gap:0.75rem;">
+        <button class="btn btn-ghost btn-sm" id="logout-button" style="display:none;">
+        Выйти
+        </button>
+
+        <div class="user-badge" id="user-badge">
+        <div class="user-circle"></div>
+        <div>
+            <div id="user-name">Гость</div>
+            <div class="muted" id="user-role">не авторизован</div>
+        </div>
+        </div>
+    </div>
+    </header>
+
+
+    <div class="screen-container">
+      <div class="page">
+
+        <!-- 1. Авторизация -->
+        <section id="screen-login" class="screen">
+          <div class="login-wrapper">
+            <div class="card login-card">
+              <div class="badge">
+                <span class="badge-dot"></span>
+                Экран 1 · Аутентификация
+              </div>
+
+              <h1 class="login-title">Вход в корпоративную систему</h1>
+              <p class="login-subtitle">Введите учётные данные.</p>
+
+              <div class="form-grid" style="grid-template-columns: 1fr;">
+                <div class="form-field">
+                  <label for="login-username">Логин</label>
+                  <input id="login-username" type="text" placeholder="user@holding.ru">
+                </div>
+
+                <div class="form-field">
+                  <label for="login-password">Пароль</label>
+                  <input id="login-password" type="password" placeholder="●●●●●●●●">
+                </div>
+              </div>
+
+              <div class="form-actions" style="justify-content: space-between;">
+                <button class="btn btn-primary" id="login-button">Войти</button>
+
+                <button class="btn btn-ghost btn-sm">Забыли пароль?</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Дашборд -->
+        <section id="screen-dashboard" class="screen">
+          <div class="page-header">
+            <h2 class="page-title">Главная панель</h2>
+            <p class="page-subtitle">Краткий обзор состояния заказов.</p>
+          </div>
+
+          <div class="grid grid-3">
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">Активные заказы</h3>
+                </div>
+                <span class="pill pill-status-progress">+12%</span>
+              </div>
+              <div style="font-size: 2rem; font-weight: 600;">128</div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">Просроченные</h3>
+                </div>
+                <span class="pill pill-status-new">Контроль</span>
+              </div>
+              <div style="font-size: 2rem; font-weight: 600; color:#b91c1c;">17</div>
+            </div>
+
+            <div class="card">
+              <div class="card-header">
+                <div>
+                  <h3 class="card-title">Сотрудники онлайн</h3>
+                </div>
+                <span class="pill pill-role">Смена: дневная</span>
+              </div>
+              <div style="font-size: 2rem; font-weight: 600;">245</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. Список заказов -->
+        <section id="screen-orders-list" class="screen">
+          <div class="page-header">
+            <h2 class="page-title">Заказы — список</h2>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Фильтры</h3>
+              <button class="btn btn-secondary btn-sm">Сбросить</button>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-field">
+                <label>Статус</label>
+                <select>
+                  <option>Все</option>
+                  <option>Новый</option>
+                  <option>В работе</option>
+                  <option>Выполнен</option>
+                </select>
+              </div>
+
+              <div class="form-field">
+                <label>Дата с</label>
+                <input type="date">
+              </div>
+
+              <div class="form-field">
+                <label>Дата по</label>
+                <input type="date">
+              </div>
+
+              <div class="form-field">
+                <label>Клиент</label>
+                <input type="text" placeholder="Начните вводить наименование клиента">
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- === JS для переключения экранов === -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const buttons = document.querySelectorAll('.nav-button');
+  const screens = document.querySelectorAll('.screen');
+
+  const loginButton = document.getElementById('login-button');
+  const logoutButton = document.getElementById('logout-button');
+  const userNameEl = document.getElementById('user-name');
+  const userRoleEl = document.getElementById('user-role');
+
+  let isAuthenticated = false;
+
+  function showScreen(id) {
+    screens.forEach(s => s.classList.toggle('active', s.id === id));
+    buttons.forEach(b => b.classList.toggle('active', b.dataset.screen === id));
+  }
+
+  function setAuthState(auth, username = null) {
+    isAuthenticated = auth;
+
+    if (auth) {
+      userNameEl.textContent = username || 'Пользователь';
+      userRoleEl.textContent = 'роль: менеджер (пример)';
+      logoutButton.style.display = 'inline-flex';
+    } else {
+      userNameEl.textContent = 'Гость';
+      userRoleEl.textContent = 'не авторизован';
+      logoutButton.style.display = 'none';
+    }
+  }
+
+  // стартовое состояние: гость, экран логина
+  setAuthState(false);
+  showScreen('screen-login');
+
+  // переключение экранов
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const target = btn.dataset.screen;
+      const requiresAuth = btn.dataset.requiresAuth === '1';
+
+      if (requiresAuth && !isAuthenticated) {
+        alert('Сначала войдите в систему.');
+        showScreen('screen-login');
+        return;
+      }
+
+      showScreen(target);
+    });
+  });
+
+  // "Войти" — простая имитация логина
+  if (loginButton) {
+    loginButton.addEventListener('click', () => {
+      const loginInput = document.getElementById('login-username');
+      const loginValue = loginInput ? loginInput.value.trim() : '';
+
+      if (!loginValue) {
+        alert('Введите логин.');
+        return;
+      }
+
+      setAuthState(true, loginValue);
+      showScreen('screen-dashboard'); // после входа отправляем на дашборд
+    });
+  }
+
+  // "Выйти"
+  if (logoutButton) {
+    logoutButton.addEventListener('click', () => {
+      setAuthState(false);
+      showScreen('screen-login');
+    });
+  }
+});
+</script>
+
+</body>
+</html>
