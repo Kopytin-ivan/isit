@@ -4,7 +4,11 @@ from users.models import Client, Employee
 
 
 class Order(models.Model):
-    STATUS = [("new", "новый"), ("ready", "готов"), ("canceled", "отменён")]
+    STATUS = [
+        ("new", "Новый"),
+        ("ready", "Готов"),
+        ("canceled", "Отменён"),
+    ]
 
     number = models.CharField(max_length=32, unique=True)
     date = models.DateField(auto_now_add=True)
@@ -14,7 +18,7 @@ class Order(models.Model):
         Employee, on_delete=models.PROTECT, related_name="orders"
     )
     status = models.CharField(
-        max_length=64, default="Новый"
+        max_length=64, choices=STATUS, default="new"
     )  # Новый, В работе, Выполнен, Отменён
     priority = models.CharField(
         max_length=32, default="Обычный"

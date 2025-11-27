@@ -21,7 +21,6 @@ from django.urls import path
 # urls.py
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from users.views import RoleViewSet, EmployeeViewSet, ClientViewSet
 from orders.views import (
     OrderViewSet,
     OrderItemViewSet,
@@ -29,6 +28,13 @@ from orders.views import (
     IntegrationViewSet,
     OrderStatusDictViewSet,
 )
+
+from users.views import (
+    RoleViewSet,
+    EmployeeViewSet,
+    ClientViewSet,
+)
+
 
 
 router = DefaultRouter()

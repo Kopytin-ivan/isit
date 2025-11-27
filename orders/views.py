@@ -34,24 +34,24 @@ class OrderViewSet(viewsets.ModelViewSet):
     @action(detail=True, methods=["post"])
     def reserve(self, request, pk=None):
         order = self.get_object()
-        # Заглушка интеграции с WMS/ERP
-        order.status = "В работе"
+        order.status = "new"      # или "ready"/"in_progress" если придумаешь код
         order.save()
-        return Response({"status": "reserved"})
+        return Response({"status": order.status})
 
     @action(detail=True, methods=["post"])
     def complete(self, request, pk=None):
         order = self.get_object()
-        order.status = "Выполнен"
+        order.status = "ready"
         order.save()
-        return Response({"status": "completed"})
+        return Response({"status": order.status})
 
     @action(detail=True, methods=["post"])
     def cancel(self, request, pk=None):
         order = self.get_object()
-        order.status = "Отменён"
+        order.status = "canceled"
         order.save()
-        return Response({"status": "cancelled"})
+        return Response({"status": order.status})
+
 
 
 class OrderItemViewSet(viewsets.ModelViewSet):
@@ -84,7 +84,8 @@ class ReportViewSet(viewsets.ModelViewSet):
 class IntegrationViewSet(viewsets.ModelViewSet):
     queryset = Integration.objects.all()
     serializer_class = IntegrationSerializer
-    permission_classes = [permissions.IsAdminUser]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
 
 
 class OrderStatusDictViewSet(viewsets.ModelViewSet):

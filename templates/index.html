@@ -338,6 +338,11 @@
       border-color: transparent;
     }
 
+    .btn-sm {
+      padding: 0.25rem 0.6rem;
+      font-size: 0.8rem;
+    }
+
     /* Логин */
     .login-wrapper {
       display: flex;
@@ -382,91 +387,67 @@
     </div>
 
     <ul class="nav">
-
-    <!-- ===== АУТЕНТИФИКАЦИЯ ===== -->
-    <li class="nav-section-title">Аутентификация</li>
-
-    <!-- Можно без авторизации -->
-    <li class="nav-item">
+      <!-- Аутентификация -->
+      <li class="nav-section-title">Аутентификация</li>
+      <li class="nav-item">
         <button class="nav-button" data-screen="screen-login">
-        <span class="nav-dot"></span>
-        Вход в систему
+          <span class="nav-dot"></span>
+          Вход в систему
         </button>
-    </li>
+      </li>
 
-
-    <!-- ===== РАБОТА ПОЛЬЗОВАТЕЛЯ ===== -->
-    <li class="nav-section-title">Работа пользователя</li>
-
-    <li class="nav-item">
+      <!-- Работа пользователя -->
+      <li class="nav-section-title">Работа пользователя</li>
+      <li class="nav-item">
         <button class="nav-button" data-screen="screen-dashboard" data-requires-auth="1">
-        <span class="nav-dot"></span>
-        Дашборд
+          <span class="nav-dot"></span>Дашборд
         </button>
-    </li>
-
-    <li class="nav-item">
+      </li>
+      <li class="nav-item">
         <button class="nav-button" data-screen="screen-orders-list" data-requires-auth="1">
-        <span class="nav-dot"></span>
-        Заказы (список)
+          <span class="nav-dot"></span>Заказы (список)
         </button>
-    </li>
-
-    <li class="nav-item">
+      </li>
+      <li class="nav-item">
         <button class="nav-button" data-screen="screen-order-card" data-requires-auth="1">
-        <span class="nav-dot"></span>
-        Заказ (карточка)
+          <span class="nav-dot"></span>Заказ (карточка)
         </button>
-    </li>
-
-    <li class="nav-item">
+      </li>
+      <li class="nav-item">
         <button class="nav-button" data-screen="screen-order-new" data-requires-auth="1">
-        <span class="nav-dot"></span>
-        Новый заказ
+          <span class="nav-dot"></span>Новый заказ
         </button>
-    </li>
-
-    <li class="nav-item">
+      </li>
+      <li class="nav-item">
         <button class="nav-button" data-screen="screen-employees-list" data-requires-auth="1">
-        <span class="nav-dot"></span>
-        Сотрудники (список)
+          <span class="nav-dot"></span>Сотрудники (список)
         </button>
-    </li>
-
-    <li class="nav-item">
+      </li>
+      <li class="nav-item">
         <button class="nav-button" data-screen="screen-employee-card" data-requires-auth="1">
-        <span class="nav-dot"></span>
-        Сотрудник (карточка)
+          <span class="nav-dot"></span>Сотрудник (карточка)
         </button>
-    </li>
-
-    <li class="nav-item">
+      </li>
+      <li class="nav-item">
         <button class="nav-button" data-screen="screen-reports-list" data-requires-auth="1">
-        <span class="nav-dot"></span>
-        Отчёты (список)
+          <span class="nav-dot"></span>Отчёты (список)
         </button>
-    </li>
-
-    <li class="nav-item">
+      </li>
+      <li class="nav-item">
         <button class="nav-button" data-screen="screen-report-new" data-requires-auth="1">
-        <span class="nav-dot"></span>
-        Создание отчёта
+          <span class="nav-dot"></span>Создание отчёта
         </button>
-    </li>
+      </li>
 
-
-    <!-- ===== АДМИНИСТРИРОВАНИЕ ===== -->
-    <li class="nav-section-title">Администрирование</li>
-
-    <li class="nav-item">
-        <button class="nav-button" data-screen="screen-admin" data-requires-auth="1">
-        <span class="nav-dot"></span>
-        Администрирование
+      <li class="nav-section-title">Администрирование</li>
+      <li class="nav-item">
+        <button class="nav-button" id="admin-nav-button">
+          <span class="nav-dot"></span>
+          Администрирование
         </button>
-    </li>
+      </li>
 
     </ul>
-
 
     <div class="sidebar-footer">
       Макеты для лабораторной №3 «ИСиТ».
@@ -476,23 +457,22 @@
   <!-- ===== ОСНОВНАЯ ЧАСТЬ ===== -->
   <main class="main">
     <header class="topbar">
-    <div class="topbar-title">Прототип интерфейса · макеты экранов</div>
+      <div class="topbar-title">Прототип интерфейса · макеты экранов</div>
 
-    <div style="display:flex; align-items:center; gap:0.75rem;">
+      <div style="display:flex; align-items:center; gap:0.75rem;">
         <button class="btn btn-ghost btn-sm" id="logout-button" style="display:none;">
-        Выйти
+          Выйти
         </button>
 
         <div class="user-badge" id="user-badge">
-        <div class="user-circle"></div>
-        <div>
+          <div class="user-circle"></div>
+          <div>
             <div id="user-name">Гость</div>
             <div class="muted" id="user-role">не авторизован</div>
+          </div>
         </div>
-        </div>
-    </div>
+      </div>
     </header>
-
 
     <div class="screen-container">
       <div class="page">
@@ -523,7 +503,6 @@
 
               <div class="form-actions" style="justify-content: space-between;">
                 <button class="btn btn-primary" id="login-button">Войти</button>
-
                 <button class="btn btn-ghost btn-sm">Забыли пароль?</button>
               </div>
             </div>
@@ -534,7 +513,7 @@
         <section id="screen-dashboard" class="screen">
           <div class="page-header">
             <h2 class="page-title">Главная панель</h2>
-            <p class="page-subtitle">Краткий обзор состояния заказов.</p>
+            <p class="page-subtitle">Краткий обзор состояния заказов и загрузки сотрудников.</p>
           </div>
 
           <div class="grid grid-3">
@@ -545,7 +524,8 @@
                 </div>
                 <span class="pill pill-status-progress">+12%</span>
               </div>
-              <div style="font-size: 2rem; font-weight: 600;">128</div>
+              <div id="dashboard-active"
+                   style="font-size: 2rem; font-weight: 600;">0</div>
             </div>
 
             <div class="card">
@@ -555,7 +535,8 @@
                 </div>
                 <span class="pill pill-status-new">Контроль</span>
               </div>
-              <div style="font-size: 2rem; font-weight: 600; color:#b91c1c;">17</div>
+              <div id="dashboard-overdue"
+                   style="font-size: 2rem; font-weight: 600; color:#b91c1c;">0</div>
             </div>
 
             <div class="card">
@@ -563,9 +544,10 @@
                 <div>
                   <h3 class="card-title">Сотрудники онлайн</h3>
                 </div>
-                <span class="pill pill-role">Смена: дневная</span>
+                <span class="pill pill-role">Статус: Активен</span>
               </div>
-              <div style="font-size: 2rem; font-weight: 600;">245</div>
+              <div id="dashboard-online"
+                   style="font-size: 2rem; font-weight: 600;">0</div>
             </div>
           </div>
         </section>
@@ -574,39 +556,410 @@
         <section id="screen-orders-list" class="screen">
           <div class="page-header">
             <h2 class="page-title">Заказы — список</h2>
+            <p class="page-subtitle">Данные берутся из REST API /api/v1/orders/.</p>
           </div>
 
           <div class="card">
             <div class="card-header">
               <h3 class="card-title">Фильтры</h3>
-              <button class="btn btn-secondary btn-sm">Сбросить</button>
+              <button class="btn btn-secondary btn-sm" id="orders-reset">Сбросить</button>
             </div>
 
             <div class="form-grid">
               <div class="form-field">
                 <label>Статус</label>
-                <select>
-                  <option>Все</option>
-                  <option>Новый</option>
-                  <option>В работе</option>
-                  <option>Выполнен</option>
-                </select>
+                  <select id="orders-status-filter">
+                    <option value="">Все</option>
+                    <option value="new">Новый</option>
+                    <option value="ready">Готовый</option>
+                    <option value="canceled">Отменён</option>
+                  </select>
               </div>
 
               <div class="form-field">
                 <label>Дата с</label>
-                <input type="date">
+                <input type="date" id="orders-date-from">
               </div>
 
               <div class="form-field">
                 <label>Дата по</label>
-                <input type="date">
+                <input type="date" id="orders-date-to">
               </div>
 
               <div class="form-field">
-                <label>Клиент</label>
-                <input type="text" placeholder="Начните вводить наименование клиента">
+                <label>Клиент (по идентификатору)</label>
+                <input type="text" id="orders-client-filter"
+                       placeholder="Например: 1, 2, ...">
               </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:1rem;">
+            <div class="card-header">
+              <h3 class="card-title">Результаты</h3>
+              <span class="muted" style="font-size:0.8rem;">Клик по строке — открыть карточку заказа</span>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                <tr>
+                  <th>№ заказа</th>
+                  <th>Клиент (ID)</th>
+                  <th>Дата</th>
+                  <th>Отдел</th>
+                  <th>Менеджер (ID)</th>
+                  <th>Статус</th>
+                  <th>План. дата</th>
+                  <th>Сумма</th>
+                </tr>
+                </thead>
+                <tbody id="orders-tbody">
+                <!-- заполняется JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. Карточка заказа -->
+        <section id="screen-order-card" class="screen">
+          <div class="page-header">
+            <h2 class="page-title">Карточка заказа</h2>
+            <p class="page-subtitle">Заполняется при выборе строки в списке заказов.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title" id="order-card-title">Заказ не выбран</h3>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-field">
+                <label>Номер заказа</label>
+                <input id="order-card-number" readonly>
+              </div>
+              <div class="form-field">
+                <label>Дата создания</label>
+                <input id="order-card-date" readonly>
+              </div>
+              <div class="form-field">
+                <label>Клиент (ID)</label>
+                <input id="order-card-client" readonly>
+              </div>
+              <div class="form-field">
+                <label>Ответственный менеджер (ID)</label>
+                <input id="order-card-manager" readonly>
+              </div>
+              <div class="form-field">
+                <label>Подразделение</label>
+                <input id="order-card-department" readonly>
+              </div>
+              <div class="form-field">
+                <label>Статус</label>
+                <input id="order-card-status" readonly>
+              </div>
+              <div class="form-field">
+                <label>Приоритет</label>
+                <input id="order-card-priority" readonly>
+              </div>
+              <div class="form-field">
+                <label>Плановая дата выполнения</label>
+                <input id="order-card-planned" readonly>
+              </div>
+              <div class="form-field">
+                <label>Сумма заказа</label>
+                <input id="order-card-amount" readonly>
+              </div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:1rem;">
+            <div class="card-header">
+              <h3 class="card-title">Состав заказа</h3>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                <tr>
+                  <th>Наименование</th>
+                  <th>Кол-во</th>
+                  <th>Ед.</th>
+                  <th>Цена</th>
+                  <th>Сумма</th>
+                </tr>
+                </thead>
+                <tbody id="order-items-tbody">
+                <!-- позиции заказа -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. Новый заказ (макет) -->
+        <section id="screen-order-new" class="screen">
+          <div class="page-header">
+            <h2 class="page-title">Новый заказ</h2>
+            <p class="page-subtitle">Макет формы создания заказа (в реальной системе запрос пойдёт в API /api/v1/orders/).</p>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Основные данные заказа</h3>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-field">
+                <label>Номер заказа</label>
+                <input id="order-new-number" placeholder="ORD-2025-119">
+              </div>
+              <div class="form-field">
+                <label>Клиент (ID)</label>
+                <input id="order-new-client" placeholder="1">
+              </div>
+              <div class="form-field">
+                <label>Подразделение</label>
+                <input id="order-new-department" placeholder="Служба сбыта">
+              </div>
+              <div class="form-field">
+                <label>Менеджер (ID)</label>
+                <input id="order-new-manager" placeholder="1">
+              </div>
+              <div class="form-field">
+                <label>Статус</label>
+                  <select id="order-new-status">
+                    <option value="new">Новый</option>
+                    <option value="ready">Готов</option>
+                    <option value="canceled">Отменён</option>
+                  </select>
+
+              </div>
+              <div class="form-field">
+                <label>Приоритет</label>
+                <select id="order-new-priority">
+                  <option>Обычный</option>
+                  <option>Высокий</option>
+                  <option>Низкий</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label>Плановая дата</label>
+                <input type="date" id="order-new-planned">
+              </div>
+              <div class="form-field">
+                <label>Сумма (итог)</label>
+                <input id="order-new-amount" placeholder="0.00">
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button class="btn btn-primary btn-sm" id="order-new-save">
+                Сохранить (демо)
+              </button>
+              <span class="muted" style="font-size:0.8rem;">
+                В данном прототипе данные не записываются в БД, создание заказа демонстрируется в админке.
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 6. Сотрудники — список -->
+        <section id="screen-employees-list" class="screen">
+          <div class="page-header">
+            <h2 class="page-title">Сотрудники — список</h2>
+            <p class="page-subtitle">Данные из REST API /api/v1/employees/.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Все сотрудники</h3>
+              <span class="muted" style="font-size:0.8rem;">
+                Клик по строке — открыть карточку сотрудника
+              </span>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                <tr>
+                  <th>ФИО</th>
+                  <th>Таб. номер</th>
+                  <th>Должность</th>
+                  <th>Подразделение</th>
+                  <th>Телефон</th>
+                  <th>Статус</th>
+                </tr>
+                </thead>
+                <tbody id="employees-tbody">
+                <!-- сотрудники -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 7. Карточка сотрудника -->
+        <section id="screen-employee-card" class="screen">
+          <div class="page-header">
+            <h2 class="page-title">Карточка сотрудника</h2>
+            <p class="page-subtitle">Заполняется при выборе сотрудника в списке.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title" id="employee-card-title">Сотрудник не выбран</h3>
+            </div>
+            <div class="form-grid">
+            <div class="form-field">
+              <label>ФИО</label>
+              <input id="employee-card-fullname">
+            </div>
+            <div class="form-field">
+              <label>Табельный номер</label>
+              <input id="employee-card-tab">
+            </div>
+            <div class="form-field">
+              <label>Должность</label>
+              <input id="employee-card-position">
+            </div>
+            <div class="form-field">
+              <label>Подразделение</label>
+              <input id="employee-card-department">
+            </div>
+            <div class="form-field">
+              <label>Телефон</label>
+              <input id="employee-card-phone">
+            </div>
+            <div class="form-field">
+              <label>E-mail</label>
+              <input id="employee-card-email">
+            </div>
+            <div class="form-field">
+              <label>Статус</label>
+              <input id="employee-card-status">
+            </div>
+            </div> <!-- конец form-grid -->
+
+            <div class="form-actions">
+              <button class="btn btn-primary btn-sm" id="employee-save-button">
+                Сохранить изменения
+              </button>
+              <span class="muted" style="font-size:0.8rem;">
+                Сохранение выполняется через REST API /api/v1/employees/&lt;id&gt;/. Нужен вход в /admin/.
+              </span>
+            </div>
+
+            </div>
+          </div>
+        </section>
+
+        <!-- 8. Отчёты — список -->
+        <section id="screen-reports-list" class="screen">
+          <div class="page-header">
+            <h2 class="page-title">Отчёты — список</h2>
+            <p class="page-subtitle">Данные из REST API /api/v1/reports/.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Сформированные отчёты</h3>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                <tr>
+                  <th>Название</th>
+                  <th>Тип</th>
+                  <th>Период</th>
+                  <th>Формат</th>
+                  <th>Статус</th>
+                </tr>
+                </thead>
+                <tbody id="reports-tbody">
+                <!-- отчёты -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- 9. Создание отчёта -->
+        <section id="screen-report-new" class="screen">
+          <div class="page-header">
+            <h2 class="page-title">Создание отчёта</h2>
+            <p class="page-subtitle">POST-запрос в /api/v1/reports/ (нужна авторизация в /admin/).</p>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Параметры отчёта</h3>
+            </div>
+
+            <div class="form-grid">
+              <div class="form-field">
+                <label>Тип отчёта</label>
+                <select id="report-type">
+                  <option value="orders">По заказам</option>
+                  <option value="employees">По сотрудникам</option>
+                  <option value="finance">Финансовый</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label>Период с</label>
+                <input type="date" id="report-from">
+              </div>
+              <div class="form-field">
+                <label>Период по</label>
+                <input type="date" id="report-to">
+              </div>
+              <div class="form-field">
+                <label>Формат</label>
+                <select id="report-format">
+                  <option value="PDF">PDF</option>
+                  <option value="XLSX">XLSX</option>
+                </select>
+              </div>
+              <div class="form-field">
+                <label>Группировка</label>
+                <input id="report-grouping" placeholder="По клиентам / по менеджерам">
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button class="btn btn-primary btn-sm" id="report-create-button">
+                Поставить отчёт в очередь
+              </button>
+              <span class="muted" style="font-size:0.8rem;">
+                Для успешного создания отчёта нужно войти в /admin/ под пользователем с правами администратора.
+              </span>
+            </div>
+          </div>
+        </section>
+
+        <!-- 10. Администрирование -->
+        <section id="screen-admin" class="screen">
+          <div class="page-header">
+            <h2 class="page-title">Администрирование</h2>
+            <p class="page-subtitle">Список интеграций с внешними системами (API /api/v1/integrations/).</p>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Интеграции</h3>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                <tr>
+                  <th>Название</th>
+                  <th>Тип</th>
+                  <th>Статус</th>
+                  <th>Последний обмен</th>
+                </tr>
+                </thead>
+                <tbody id="integrations-tbody">
+                <!-- интеграции -->
+                </tbody>
+              </table>
             </div>
           </div>
         </section>
@@ -616,9 +969,25 @@
   </main>
 </div>
 
-<!-- === JS для переключения экранов === -->
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+  // ===== Константы и кеши =====
+  const API_BASE = '/api/v1';
+
+  const STATUS_LABELS = {
+    new: 'Новый',
+    ready: 'Готов',
+    canceled: 'Отменён',
+  };
+
+  let isAuthenticated = false;
+  let cachedOrders = [];
+  let cachedEmployees = [];
+  let cachedReports = [];
+  let selectedOrder = null;
+  let selectedEmployee = null;
+
+  // ===== Селекторы =====
   const buttons = document.querySelectorAll('.nav-button');
   const screens = document.querySelectorAll('.screen');
 
@@ -627,19 +996,36 @@ document.addEventListener('DOMContentLoaded', () => {
   const userNameEl = document.getElementById('user-name');
   const userRoleEl = document.getElementById('user-role');
 
-  let isAuthenticated = false;
+  const adminNavButton = document.getElementById('admin-nav-button');
 
+  const ordersStatusFilter = document.getElementById('orders-status-filter');
+  const ordersClientFilter = document.getElementById('orders-client-filter');
+  const ordersDateFrom = document.getElementById('orders-date-from');
+  const ordersDateTo = document.getElementById('orders-date-to');
+  const ordersReset = document.getElementById('orders-reset');
+
+  const orderNewSave = document.getElementById('order-new-save');
+
+  const reportCreateButton = document.getElementById('report-create-button');
+  const employeeSaveButton = document.getElementById('employee-save-button'); // ← ДОБАВЬ ЭТО
+  // ===== Общие утилиты =====
   function showScreen(id) {
     screens.forEach(s => s.classList.toggle('active', s.id === id));
     buttons.forEach(b => b.classList.toggle('active', b.dataset.screen === id));
   }
 
+  function guessRole(username) {
+    const u = (username || '').toLowerCase();
+    if (u === 'admin') return 'администратор системы';
+    if (u.includes('analyst') || u.includes('analitik')) return 'аналитик';
+    return 'менеджер по заказам';
+  }
+
   function setAuthState(auth, username = null) {
     isAuthenticated = auth;
-
     if (auth) {
       userNameEl.textContent = username || 'Пользователь';
-      userRoleEl.textContent = 'роль: менеджер (пример)';
+      userRoleEl.textContent = 'роль: ' + guessRole(username);
       logoutButton.style.display = 'inline-flex';
     } else {
       userNameEl.textContent = 'Гость';
@@ -648,15 +1034,441 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // стартовое состояние: гость, экран логина
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+    return null;
+  }
+
+  // ===== Работа с API =====
+  async function fetchJSON(url, options = {}) {
+    try {
+      const resp = await fetch(url, options);
+      if (!resp.ok) {
+        console.error('Ошибка запроса', url, resp.status);
+        return { ok: false, status: resp.status, data: null };
+      }
+      const data = await resp.json();
+      return { ok: true, status: resp.status, data };
+    } catch (e) {
+      console.error('Ошибка сети', url, e);
+      return { ok: false, status: 0, data: null };
+    }
+  }
+
+  async function fetchOrders() {
+    const res = await fetchJSON(`${API_BASE}/orders/`);
+    if (res.ok) cachedOrders = res.data;
+    return res.data || [];
+  }
+
+  async function fetchEmployees() {
+    const res = await fetchJSON(`${API_BASE}/employees/`);
+    if (res.ok) cachedEmployees = res.data;
+    return res.data || [];
+  }
+
+  async function fetchOrderItems(orderId) {
+    const res = await fetchJSON(`${API_BASE}/order-items/?order=${orderId}`);
+    return res.data || [];
+  }
+
+  async function fetchReports() {
+    const res = await fetchJSON(`${API_BASE}/reports/`);
+    if (res.ok) cachedReports = res.data;
+    return res.data || [];
+  }
+
+  // ===== Дашборд =====
+  async function loadDashboard() {
+    const [orders, employees] = await Promise.all([
+      cachedOrders.length ? cachedOrders : fetchOrders(),
+      cachedEmployees.length ? cachedEmployees : fetchEmployees(),
+    ]);
+
+    const today = new Date();
+
+    let active = 0;
+    let overdue = 0;
+
+    orders.forEach(o => {
+      const status = o.status || 'new';
+
+      // активные = все кроме отменённых
+      if (status !== 'canceled') active++;
+
+      // просроченные = есть плановая дата в прошлом и статус не "готов"/"отменён"
+      if (o.planned_date && status === 'new') {
+        const planned = new Date(o.planned_date);
+        if (planned < today) overdue++;
+      }
+    });
+
+    const online = employees.filter(e => e.status === 'Активен').length;
+
+    const activeEl = document.getElementById('dashboard-active');
+    const overdueEl = document.getElementById('dashboard-overdue');
+    const onlineEl = document.getElementById('dashboard-online');
+
+    if (activeEl) activeEl.textContent = active;
+    if (overdueEl) overdueEl.textContent = overdue;
+    if (onlineEl) onlineEl.textContent = online;
+  }
+
+  // ===== Заказы — список =====
+  function applyOrderFilters(orders) {
+    const statusFilter = ordersStatusFilter ? ordersStatusFilter.value : '';
+    const clientFilter = ordersClientFilter ? ordersClientFilter.value.trim() : '';
+    const from = ordersDateFrom ? ordersDateFrom.value : '';
+    const to = ordersDateTo ? ordersDateTo.value : '';
+
+    return orders.filter(o => {
+      if (statusFilter && o.status !== statusFilter) return false;
+      if (clientFilter && String(o.client) !== clientFilter) return false;
+      if (from && o.date && o.date < from) return false;
+      if (to && o.date && o.date > to) return false;
+      return true;
+    });
+  }
+
+  function renderOrdersTable(orders) {
+    const tbody = document.getElementById('orders-tbody');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    if (!orders.length) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td colspan="8" style="color:#9ca3af;">Нет данных для отображения</td>';
+      tbody.appendChild(tr);
+      return;
+    }
+
+    orders.forEach(order => {
+      const tr = document.createElement('tr');
+      tr.style.cursor = 'pointer';
+
+      const statusLabel = STATUS_LABELS[order.status] || order.status || '';
+
+      tr.innerHTML = `
+        <td>${order.number}</td>
+        <td>${order.client}</td>
+        <td>${order.date || ''}</td>
+        <td>${order.department || ''}</td>
+        <td>${order.manager || ''}</td>
+        <td>${statusLabel}</td>
+        <td>${order.planned_date || ''}</td>
+        <td>${order.amount_total || ''}</td>
+      `;
+
+      tr.addEventListener('click', () => {
+        selectedOrder = order;
+        renderOrderCard();
+        showScreen('screen-order-card');
+      });
+
+      tbody.appendChild(tr);
+    });
+  }
+
+  async function loadOrders() {
+    const data = cachedOrders.length ? cachedOrders : await fetchOrders();
+    const filtered = applyOrderFilters(data);
+    renderOrdersTable(filtered);
+  }
+
+  // ===== Карточка заказа =====
+  async function renderOrderCard() {
+    const titleEl = document.getElementById('order-card-title');
+    if (!selectedOrder) {
+      if (titleEl) titleEl.textContent = 'Заказ не выбран';
+      return;
+    }
+
+    const byId = id => document.getElementById(id);
+    if (titleEl) titleEl.textContent = `Заказ ${selectedOrder.number}`;
+
+    byId('order-card-number').value = selectedOrder.number || '';
+    byId('order-card-date').value = selectedOrder.date || '';
+    byId('order-card-client').value = selectedOrder.client || '';
+    byId('order-card-manager').value = selectedOrder.manager || '';
+    byId('order-card-department').value = selectedOrder.department || '';
+    byId('order-card-status').value =
+      STATUS_LABELS[selectedOrder.status] || selectedOrder.status || '';
+    byId('order-card-priority').value = selectedOrder.priority || '';
+    byId('order-card-planned').value = selectedOrder.planned_date || '';
+    byId('order-card-amount').value = selectedOrder.amount_total || '';
+
+    const items = await fetchOrderItems(selectedOrder.id);
+    const tbody = document.getElementById('order-items-tbody');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    if (!items.length) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td colspan="5" style="color:#9ca3af;">Позиции заказа отсутствуют</td>';
+      tbody.appendChild(tr);
+      return;
+    }
+
+    items.forEach(item => {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${item.name}</td>
+        <td>${item.qty}</td>
+        <td>${item.unit}</td>
+        <td>${item.price}</td>
+        <td>${item.amount}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  // ===== Сотрудники =====
+  function renderEmployeesTable(employees) {
+    const tbody = document.getElementById('employees-tbody');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    if (!employees.length) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td colspan="6" style="color:#9ca3af;">Нет данных для отображения</td>';
+      tbody.appendChild(tr);
+      return;
+    }
+
+    employees.forEach(emp => {
+      const tr = document.createElement('tr');
+      tr.style.cursor = 'pointer';
+      tr.innerHTML = `
+        <td>${emp.full_name}</td>
+        <td>${emp.tab_number}</td>
+        <td>${emp.position}</td>
+        <td>${emp.department}</td>
+        <td>${emp.phone}</td>
+        <td>${emp.status}</td>
+      `;
+      tr.addEventListener('click', () => {
+        selectedEmployee = emp;
+        renderEmployeeCard();
+        showScreen('screen-employee-card');
+      });
+      tbody.appendChild(tr);
+    });
+  }
+
+  async function loadEmployees() {
+    const employees = cachedEmployees.length ? cachedEmployees : await fetchEmployees();
+    renderEmployeesTable(employees);
+  }
+
+  function renderEmployeeCard() {
+    const titleEl = document.getElementById('employee-card-title');
+    if (!selectedEmployee) {
+      if (titleEl) titleEl.textContent = 'Сотрудник не выбран';
+      return;
+    }
+
+    const byId = id => document.getElementById(id);
+
+    if (titleEl) titleEl.textContent = selectedEmployee.full_name || 'Сотрудник';
+    byId('employee-card-fullname').value = selectedEmployee.full_name || '';
+    byId('employee-card-tab').value = selectedEmployee.tab_number || '';
+    byId('employee-card-position').value = selectedEmployee.position || '';
+    byId('employee-card-department').value = selectedEmployee.department || '';
+    byId('employee-card-phone').value = selectedEmployee.phone || '';
+    byId('employee-card-email').value = selectedEmployee.email || '';
+    byId('employee-card-status').value = selectedEmployee.status || '';
+  }
+
+  // ===== Отчёты =====
+  function renderReportsTable(reports) {
+    const tbody = document.getElementById('reports-tbody');
+    if (!tbody) return;
+
+    tbody.innerHTML = '';
+
+    if (!reports.length) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = '<td colspan="5" style="color:#9ca3af;">Отчёты отсутствуют</td>';
+      tbody.appendChild(tr);
+      return;
+    }
+
+    const typeMap = {
+      orders: 'По заказам',
+      employees: 'По сотрудникам',
+      finance: 'Финансовый',
+    };
+
+    const statusMap = {
+      ready: 'Готов',
+      processing: 'В процессе',
+      error: 'Ошибка',
+    };
+
+    reports.forEach(r => {
+      const tr = document.createElement('tr');
+      const period =
+        (r.period_from || '') + (r.period_to ? ' — ' + r.period_to : '');
+      tr.innerHTML = `
+        <td>${r.title}</td>
+        <td>${typeMap[r.report_type] || r.report_type}</td>
+        <td>${period}</td>
+        <td>${r.format}</td>
+        <td>${statusMap[r.status] || r.status}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+  }
+
+  async function loadReports() {
+    const reports = cachedReports.length ? cachedReports : await fetchReports();
+    renderReportsTable(reports);
+  }
+// ===== Сохранение сотрудника =====
+async function saveEmployee() {
+  if (!selectedEmployee) {
+    alert('Сотрудник не выбран');
+    return;
+  }
+
+  const payload = {
+    full_name: document.getElementById('employee-card-fullname').value.trim(),
+    tab_number: document.getElementById('employee-card-tab').value.trim(),
+    position: document.getElementById('employee-card-position').value.trim(),
+    department: document.getElementById('employee-card-department').value.trim(),
+    phone: document.getElementById('employee-card-phone').value.trim(),
+    email: document.getElementById('employee-card-email').value.trim(),
+    status: document.getElementById('employee-card-status').value.trim(),
+  };
+
+  const res = await fetchJSON(`${API_BASE}/employees/${selectedEmployee.id}/`, {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      'X-CSRFToken': getCookie('csrftoken') || '',
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (res.ok) {
+    alert('Изменения сохранены.');
+    cachedEmployees = [];          // сбросим кеш
+    await loadEmployees();         // перечитаем список
+  } else if (res.status === 403) {
+    alert('Нет прав на изменение. Нужно войти в /admin/ под пользователем с правами.');
+  } else {
+    alert('Ошибка при сохранении сотрудника. Подробности — в консоли браузера.');
+  }
+}
+
+  // ===== Создание отчёта =====
+  async function createReport() {
+    const type = document.getElementById('report-type').value;
+    const from = document.getElementById('report-from').value || null;
+    const to = document.getElementById('report-to').value || null;
+    const format = document.getElementById('report-format').value;
+    const grouping = document.getElementById('report-grouping').value || '';
+
+    const title = `Отчёт (${type}) ${from || ''} ${to || ''}`;
+
+    const payload = {
+      title,
+      report_type: type,
+      period_from: from,
+      period_to: to,
+      format,
+      grouping,
+    };
+
+    const res = await fetchJSON(`${API_BASE}/reports/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken') || '',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (res.ok) {
+      alert('Отчёт успешно создан.');
+      cachedReports = [];
+      loadReports();
+    } else {
+      alert('Не удалось создать отчёт. Скорее всего, нет прав (нужно войти в /admin/).');
+    }
+  }
+
+  // ===== Создание заказа =====
+  async function createOrder() {
+    const number = document.getElementById('order-new-number').value.trim();
+    const client = document.getElementById('order-new-client').value.trim();
+    const department = document.getElementById('order-new-department').value.trim();
+    const manager = document.getElementById('order-new-manager').value.trim();
+    const status = document.getElementById('order-new-status').value;
+    const priority = document.getElementById('order-new-priority').value;
+    const planned = document.getElementById('order-new-planned').value || null;
+    const amountRaw = document.getElementById('order-new-amount').value.trim();
+    const amount = amountRaw ? parseFloat(amountRaw.replace(',', '.')) : 0;
+
+    if (!number || !client || !department || !manager) {
+      alert('Заполните номер, клиента, подразделение и менеджера.');
+      return;
+    }
+
+    const payload = {
+      number,
+      client: Number(client),
+      department,
+      manager: Number(manager),
+      status,
+      priority,
+      planned_date: planned,
+      amount_total: amount,
+    };
+
+    const res = await fetchJSON(`${API_BASE}/orders/`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRFToken': getCookie('csrftoken') || '',
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (res.ok) {
+      alert('Заказ успешно создан.');
+      cachedOrders = [];
+      await loadOrders();
+      await loadDashboard();
+    } else if (res.status === 400) {
+      alert('Сервер вернул ошибку валидации (400). Проверьте, что client и manager — существующие ID.');
+    } else if (res.status === 403) {
+      alert('Нет прав на создание заказа. Нужно войти в /admin/ под пользователем с правами.');
+    } else {
+      alert('Ошибка при создании заказа. Подробности в консоли браузера.');
+    }
+  }
+
+  // ===== Обработчики UI =====
+
+  // стартовое состояние
   setAuthState(false);
   showScreen('screen-login');
 
-  // переключение экранов
+  // навигация по вкладкам
   buttons.forEach(btn => {
+    // Администрирование обрабатываем отдельно
+    if (btn.id === 'admin-nav-button') return;
+
     btn.addEventListener('click', () => {
       const target = btn.dataset.screen;
-      const requiresAuth = btn.dataset.requiresAuth === '1';
+      const requiresAuth =
+        btn.dataset.requires_auth === '1' || btn.dataset.requiresAuth === '1';
 
       if (requiresAuth && !isAuthenticated) {
         alert('Сначала войдите в систему.');
@@ -665,22 +1477,58 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       showScreen(target);
+
+      if (target === 'screen-dashboard') {
+        loadDashboard();
+      } else if (target === 'screen-orders-list') {
+        loadOrders();
+      } else if (target === 'screen-employees-list') {
+        loadEmployees();
+      } else if (target === 'screen-reports-list') {
+        loadReports();
+      }
     });
   });
 
-  // "Войти" — простая имитация логина
+  // кнопка "Администрирование" -> переход в /admin/
+  if (adminNavButton) {
+    adminNavButton.addEventListener('click', () => {
+      window.location.href = 'http://127.0.0.1:8000/admin/login/?next=/admin/';
+    });
+  }
+
+  // фильтры заказов
+  [ordersStatusFilter, ordersClientFilter, ordersDateFrom, ordersDateTo]
+    .forEach(el => {
+      if (el) el.addEventListener('input', () => {
+        if (isAuthenticated) loadOrders();
+      });
+    });
+
+  if (ordersReset) {
+    ordersReset.addEventListener('click', () => {
+      if (ordersStatusFilter) ordersStatusFilter.value = '';
+      if (ordersClientFilter) ordersClientFilter.value = '';
+      if (ordersDateFrom) ordersDateFrom.value = '';
+      if (ordersDateTo) ordersDateTo.value = '';
+      if (isAuthenticated) loadOrders();
+    });
+  }
+
+  // "Войти" — псевдо-логин (настоящая авторизация через /admin/)
   if (loginButton) {
     loginButton.addEventListener('click', () => {
       const loginInput = document.getElementById('login-username');
       const loginValue = loginInput ? loginInput.value.trim() : '';
 
       if (!loginValue) {
-        alert('Введите логин.');
+        alert('Введите логин (можно admin и т.п.).');
         return;
       }
 
       setAuthState(true, loginValue);
-      showScreen('screen-dashboard'); // после входа отправляем на дашборд
+      showScreen('screen-dashboard');
+      loadDashboard();
     });
   }
 
@@ -691,8 +1539,42 @@ document.addEventListener('DOMContentLoaded', () => {
       showScreen('screen-login');
     });
   }
+
+  // Сохранение нового заказа
+  if (orderNewSave) {
+    orderNewSave.addEventListener('click', () => {
+      if (!isAuthenticated) {
+        alert('Для создания заказа войдите в систему и в /admin/.');
+        return;
+      }
+      createOrder();
+    });
+  }
+
+  // Создание отчёта
+  if (reportCreateButton) {
+    reportCreateButton.addEventListener('click', () => {
+      if (!isAuthenticated) {
+        alert('Для создания отчёта войдите в систему и в /admin/.');
+        return;
+      }
+      createReport();
+    });
+  }
+  // Сохранение сотрудника
+  if (employeeSaveButton) {
+    employeeSaveButton.addEventListener('click', () => {
+      if (!isAuthenticated) {
+        alert('Для сохранения данных войдите в систему и в /admin/.');
+        return;
+      }
+      saveEmployee();
+    });
+  }
+
 });
 </script>
+
 
 </body>
 </html>
