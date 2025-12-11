@@ -2,378 +2,495 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <title>КИС производственного холдинга — макеты экранов</title>
-  <style>
-    * { box-sizing: border-box; }
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f3f4f6;
-      color: #111827;
-    }
+  <title>КИС производственного холдинга</title>
+    <style>
+  * { box-sizing: border-box; }
 
-    .app {
-      display: flex;
-      min-height: 100vh;
-    }
+  :root {
+    /* Нейтральная тёмная палитра */
+    --bg-body: #020617;        /* очень тёмный фон */
+    --bg-surface: #0f172a;     /* карточки / панели */
+    --bg-surface-soft: #020617;/* сайдбар / подложки */
+    --bg-elevated: #111827;    /* хедеры таблиц, топбар */
 
-    /* ===== Сайдбар ===== */
+    --border-subtle: #1f2937;
+    --border-strong: #0b1120;
+
+    --text-main: #e5e7eb;
+    --text-muted: #9ca3af;
+    --text-soft: #6b7280;
+
+    /* Акценты (взято из Tailwind indigo/green/amber/red) */
+    --accent: #6366f1;         /* основной акцент (кнопки, графики) */
+    --accent-strong: #4f46e5;  /* hover / активные элементы */
+    --accent-soft: rgba(99,102,241,0.16);
+
+    --success: #22c55e;
+    --warning: #facc15;
+    --danger: #ef4444;
+
+    --pill-bg: rgba(15,23,42,0.9);
+
+    --sidebar-width: 260px;
+    --radius-lg: 0.9rem;
+    --shadow-soft: 0 18px 45px rgba(15,23,42,0.7);
+  }
+
+  body {
+    margin: 0;
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: radial-gradient(circle at top left, #020617 0, #020617 40%, #020617 100%);
+    color: var(--text-main);
+  }
+
+  .app {
+    display: flex;
+    min-height: 100vh;
+    background: radial-gradient(circle at top left, #020617 0, #020617 45%, #020617 100%);
+  }
+
+  /* ===== Сайдбар ===== */
+  .sidebar {
+    width: var(--sidebar-width);
+    background:
+      radial-gradient(circle at top left, #1e293b 0, #020617 45%, #020617 100%);
+    color: #e5e7eb;
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--border-subtle);
+  }
+
+  .sidebar-header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid rgba(15,23,42,0.9);
+    background: linear-gradient(135deg, #020617 0, #0f172a 60%, #111827 100%);
+  }
+
+  .sidebar-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 0 0 0.25rem;
+  }
+
+  .sidebar-subtitle {
+    font-size: 0.8rem;
+    color: var(--text-soft);
+    margin: 0;
+  }
+
+  .nav {
+    list-style: none;
+    padding: 0.5rem 0;
+    margin: 0;
+    flex: 1;
+    overflow-y: auto;
+  }
+
+  .nav-section-title {
+    padding: 0.75rem 1.25rem 0.25rem;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-soft);
+  }
+
+  .nav-item { margin: 0; padding: 0; }
+
+  .nav-button {
+    width: 100%;
+    border: none;
+    outline: none;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    padding: 0.5rem 1.25rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: background 120ms ease, color 120ms ease, transform 80ms ease;
+  }
+
+  .nav-button:hover {
+    background: rgba(15,23,42,0.9);
+  }
+
+  .nav-button.active {
+    background: rgba(37,99,235,0.18);
+    color: #e5e7eb;
+  }
+
+  .nav-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: #4b5563;
+  }
+
+  .nav-button.active .nav-dot {
+    background: var(--accent);
+  }
+
+  .sidebar-footer {
+    padding: 0.75rem 1.25rem;
+    border-top: 1px solid rgba(15,23,42,0.9);
+    font-size: 0.75rem;
+    color: var(--text-soft);
+    background: radial-gradient(circle at bottom right, #020617 0, #020617 60%, #020617 100%);
+  }
+
+  /* ===== Основная часть ===== */
+  .main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    background: radial-gradient(circle at top left, #020617 0, #020617 45%, #020617 100%);
+  }
+
+  .topbar {
+    height: 56px;
+    background: rgba(15,23,42,0.96);
+    border-bottom: 1px solid var(--border-subtle);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1.75rem;
+    backdrop-filter: blur(12px);
+  }
+
+  .topbar-title {
+    font-size: 0.9rem;
+    color: var(--text-soft);
+  }
+
+  .user-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--text-main);
+  }
+
+  .user-circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 999px;
+    background: radial-gradient(circle at 30% 30%, #22c55e, #15803d);
+  }
+
+  .screen-container {
+    flex: 1;
+    padding: 1.25rem 1.75rem 1.75rem;
+    overflow: auto;
+  }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  .page {
+    max-width: 1360px;   /* шире, чтобы меньше пустоты по бокам */
+    margin: 0 auto;
+  }
+
+  .page-header { margin-bottom: 1rem; }
+
+  .page-title {
+    margin: 0 0 0.25rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
+
+  .page-subtitle {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--text-soft);
+  }
+
+  /* Карточки */
+  .card {
+    background: var(--bg-surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-subtle);
+    padding: 1.1rem 1.25rem;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .card + .card { margin-top: 0.9rem; }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+  }
+
+  .card-title {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .muted { color: var(--text-soft); }
+
+  .pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    border: 1px solid rgba(148,163,184,0.25);
+    padding: 0.15rem 0.6rem;
+    font-size: 0.75rem;
+    color: var(--text-main);
+    background: var(--pill-bg);
+  }
+
+  .pill-status-new {
+    border-color: rgba(96,165,250,0.4);
+    background: linear-gradient(135deg, rgba(37,99,235,0.24), rgba(37,99,235,0.05));
+    color: #bfdbfe;
+  }
+
+  .pill-status-progress {
+    border-color: rgba(250,204,21,0.4);
+    background: linear-gradient(135deg, rgba(250,204,21,0.24), rgba(15,23,42,0.5));
+    color: #facc15;
+  }
+
+  .pill-status-done {
+    border-color: rgba(34,197,94,0.4);
+    background: linear-gradient(135deg, rgba(22,163,74,0.24), rgba(15,23,42,0.5));
+    color: #bbf7d0;
+  }
+
+  .pill-role {
+    border-color: rgba(45,212,191,0.4);
+    background: linear-gradient(135deg, rgba(16,185,129,0.22), rgba(15,23,42,0.5));
+    color: #a7f3d0;
+  }
+
+  /* Сетки */
+  .grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  @media (max-width: 1200px) {
+    .page { max-width: 100%; }
+  }
+
+  @media (max-width: 960px) {
+    .app { flex-direction: column; }
     .sidebar {
-      width: 260px;
-      background: #111827;
-      color: #e5e7eb;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .sidebar-header {
-      padding: 1rem 1.25rem;
-      border-bottom: 1px solid #1f2937;
-    }
-
-    .sidebar-title {
-      font-size: 1.05rem;
-      font-weight: 600;
-      margin: 0 0 0.25rem;
-    }
-
-    .sidebar-subtitle {
-      font-size: 0.8rem;
-      color: #9ca3af;
-      margin: 0;
-    }
-
-    .nav {
-      list-style: none;
-      padding: 0.5rem 0;
-      margin: 0;
-      flex: 1;
-      overflow-y: auto;
-    }
-
-    .nav-section-title {
-      padding: 0.75rem 1.25rem 0.25rem;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: #6b7280;
-    }
-
-    .nav-item { margin: 0; padding: 0; }
-
-    .nav-button {
       width: 100%;
-      border: none;
-      outline: none;
-      background: transparent;
-      color: inherit;
-      text-align: left;
-      padding: 0.5rem 1.25rem;
-      font-size: 0.9rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      flex-direction: row;
+      overflow-x: auto;
     }
+    .sidebar-header, .sidebar-footer { display: none; }
+    .nav { display: flex; flex-wrap: nowrap; }
+    .nav-button { white-space: nowrap; }
+  }
 
-    .nav-button:hover { background: #1f2937; }
+  @media (max-width: 768px) {
+    .grid-3, .grid-2 { grid-template-columns: 1fr; }
+    .screen-container { padding: 1rem; }
+  }
 
-    .nav-button.active { background: #374151; }
+  /* Таблицы */
+  .table-wrapper { overflow-x: auto; }
 
-    .nav-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: #6b7280;
-    }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
 
-    .nav-button.active .nav-dot {
-      background: #60a5fa;
-    }
+  th, td {
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid #1f2937;
+    text-align: left;
+    white-space: nowrap;
+  }
 
-    .sidebar-footer {
-      padding: 0.75rem 1.25rem;
-      border-top: 1px solid #1f2937;
-      font-size: 0.75rem;
-      color: #6b7280;
-    }
+  th {
+    font-weight: 500;
+    font-size: 0.8rem;
+    color: var(--text-soft);
+    background: #020617;
+  }
 
-    /* ===== Основная часть ===== */
-    .main {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      min-width: 0;
-    }
+  tr:hover td { background: rgba(15,23,42,0.85); }
 
-    .topbar {
-      height: 56px;
-      background: #ffffff;
-      border-bottom: 1px solid #e5e7eb;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 1.5rem;
-    }
+  /* Формы */
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem 1rem;
+  }
 
-    .topbar-title {
-      font-size: 0.9rem;
-      color: #6b7280;
-    }
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    font-size: 0.85rem;
+  }
 
-    .user-badge {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.85rem;
-      color: #374151;
-    }
+  .form-field label {
+    color: var(--text-muted);
+  }
 
-    .user-circle {
-      width: 24px;
-      height: 24px;
-      border-radius: 999px;
-      background: #60a5fa;
-    }
+  .form-field input,
+  .form-field select,
+  .form-field textarea {
+    border-radius: 0.6rem;
+    border: 1px solid #1f2937;
+    padding: 0.45rem 0.6rem;
+    background: #020617;
+    color: var(--text-main);
+  }
 
-    .screen-container {
-      flex: 1;
-      padding: 1.5rem;
-      overflow: auto;
-    }
+  .form-field input:focus,
+  .form-field select:focus,
+  .form-field textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px rgba(99,102,241,0.55);
+  }
 
-    .screen { display: none; }
-    .screen.active { display: block; }
+  .form-actions {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
 
-    .page {
-      max-width: 1100px;
-      margin: 0 auto;
-    }
+  /* Кнопки */
+  .btn {
+    border-radius: 999px;
+    border: 1px solid transparent;
+    padding: 0.45rem 0.95rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 120ms ease, border-color 120ms ease, transform 80ms ease, box-shadow 120ms ease;
+  }
 
-    .page-header { margin-bottom: 1.25rem; }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent) 0, var(--accent-strong) 100%);
+    color: #f9fafb;
+    border-color: rgba(129,140,248,0.6);
+    box-shadow: 0 10px 25px rgba(37,99,235,0.45);
+  }
 
-    .page-title {
-      margin: 0 0 0.25rem;
-      font-size: 1.4rem;
-      font-weight: 600;
-    }
+  .btn-primary:hover {
+    transform: translateY(-0.5px);
+    box-shadow: 0 14px 30px rgba(37,99,235,0.6);
+  }
 
-    .page-subtitle {
-      margin: 0;
-      font-size: 0.9rem;
-      color: #6b7280;
-    }
+  .btn-secondary {
+    background: rgba(15,23,42,0.9);
+    color: var(--text-main);
+    border-color: #1f2937;
+  }
 
-    /* Карточки */
-    .card {
-      background: #ffffff;
-      border-radius: 0.75rem;
-      border: 1px solid #e5e7eb;
-      padding: 1.25rem;
-      box-shadow: 0 10px 15px -10px rgba(15, 23, 42, 0.2);
-    }
+  .btn-secondary:hover {
+    background: #020617;
+  }
 
-    .card + .card { margin-top: 1rem; }
+  .btn-ghost {
+    background: transparent;
+    color: var(--text-soft);
+    border-color: transparent;
+  }
 
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 0.75rem;
-    }
+  .btn-ghost:hover {
+    color: var(--text-main);
+    background: rgba(15,23,42,0.6);
+  }
 
-    .card-title {
-      margin: 0;
-      font-size: 1rem;
-      font-weight: 600;
-    }
+  .btn-sm {
+    padding: 0.25rem 0.65rem;
+    font-size: 0.8rem;
+  }
 
-    .muted { color: #9ca3af; }
+  /* Логин */
+  .login-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 56px);
+  }
 
-    .pill {
-      display: inline-block;
-      border-radius: 999px;
-      border: 1px solid #d1d5db;
-      padding: 0.15rem 0.55rem;
-      font-size: 0.75rem;
-      color: #4b5563;
-      background: #f9fafb;
-    }
+  .login-card { max-width: 420px; width: 100%; }
 
-    .pill-status-new {
-      border-color: #bfdbfe;
-      background: #eff6ff;
-      color: #1d4ed8;
-    }
+  .login-title {
+    margin: 0 0 0.25rem;
+    font-size: 1.4rem;
+    font-weight: 600;
+  }
 
-    .pill-status-progress {
-      border-color: #fde68a;
-      background: #fffbeb;
-      color: #92400e;
-    }
+  .login-subtitle {
+    margin: 0 0 1rem;
+    font-size: 0.9rem;
+    color: var(--text-soft);
+  }
 
-    .pill-status-done {
-      border-color: #bbf7d0;
-      background: #ecfdf5;
-      color: #15803d;
-    }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    border-radius: 999px;
+    padding: 0.2rem 0.55rem;
+    font-size: 0.75rem;
+    background: rgba(37,99,235,0.1);
+    color: #c7d2fe;
+    border: 1px solid rgba(129,140,248,0.55);
+  }
 
-    .pill-role {
-      border-color: #d1fae5;
-      background: #ecfdf5;
-      color: #047857;
-    }
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 999px;
+    background: var(--accent);
+  }
 
-    /* Сетки */
-    .grid {
-      display: grid;
-      gap: 1rem;
-    }
+  /* Диаграммы */
+  .chart-card {
+    display: flex;
+    flex-direction: column;
+  }
 
-    .grid-3 {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
+  .chart-wrapper {
+    position: relative;
+    width: 100%;
+    height: 260px;
+    margin-top: 0.25rem;
+  }
 
-    .grid-2 {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+  .dashboard-charts {
+    margin-top: 1.1rem;
+  }
+</style>
 
-    @media (max-width: 960px) {
-      .app { flex-direction: column; }
-      .sidebar { width: 100%; flex-direction: row; overflow-x: auto; }
-      .sidebar-header, .sidebar-footer { display: none; }
-      .nav { display: flex; flex-wrap: nowrap; }
-      .nav-button { white-space: nowrap; }
-    }
-
-    @media (max-width: 768px) {
-      .grid-3, .grid-2 { grid-template-columns: 1fr; }
-    }
-
-    /* Таблицы */
-    .table-wrapper { overflow-x: auto; }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.85rem;
-    }
-
-    th, td {
-      padding: 0.5rem 0.75rem;
-      border-bottom: 1px solid #e5e7eb;
-      text-align: left;
-      white-space: nowrap;
-    }
-
-    th {
-      font-weight: 600;
-      font-size: 0.8rem;
-      color: #6b7280;
-      background: #f9fafb;
-    }
-
-    tr:hover td { background: #f9fafb; }
-
-    .table-actions { display: flex; gap: 0.25rem; }
-
-    /* Формы */
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 0.75rem 1rem;
-    }
-
-    .form-field {
-      display: flex;
-      flex-direction: column;
-      gap: 0.25rem;
-      font-size: 0.85rem;
-    }
-
-    .form-field input,
-    .form-field select,
-    .form-field textarea {
-      border-radius: 0.5rem;
-      border: 1px solid #d1d5db;
-      padding: 0.45rem 0.6rem;
-      background: #ffffff;
-    }
-
-    .form-actions {
-      margin-top: 1rem;
-      display: flex;
-      gap: 0.5rem;
-      flex-wrap: wrap;
-    }
-
-    /* Кнопки */
-    .btn {
-      border-radius: 999px;
-      border: 1px solid transparent;
-      padding: 0.45rem 0.9rem;
-      font-size: 0.85rem;
-      cursor: pointer;
-      font-weight: 500;
-      display: inline-flex;
-      align-items: center;
-    }
-
-    .btn-primary {
-      background: #2563eb;
-      color: #ffffff;
-      border-color: #1d4ed8;
-    }
-
-    .btn-secondary {
-      background: #ffffff;
-      color: #374151;
-      border-color: #d1d5db;
-    }
-
-    .btn-ghost {
-      background: transparent;
-      color: #4b5563;
-      border-color: transparent;
-    }
-
-    .btn-sm {
-      padding: 0.25rem 0.6rem;
-      font-size: 0.8rem;
-    }
-
-    /* Логин */
-    .login-wrapper {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: calc(100vh - 56px);
-    }
-
-    .login-card { max-width: 420px; width: 100%; }
-
-    .login-title { margin: 0 0 0.25rem; font-size: 1.4rem; font-weight: 600; }
-    .login-subtitle { margin: 0 0 1rem; font-size: 0.9rem; color: #6b7280; }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.35rem;
-      border-radius: 999px;
-      padding: 0.2rem 0.55rem;
-      font-size: 0.75rem;
-      background: #eef2ff;
-      color: #4338ca;
-    }
-
-    .badge-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
-      background: #4f46e5;
-    }
-  </style>
+  <!-- Библиотека для рисования диаграмм -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 
 <body>
@@ -513,10 +630,14 @@
         <section id="screen-dashboard" class="screen">
           <div class="page-header">
             <h2 class="page-title">Главная панель</h2>
-            <p class="page-subtitle">Краткий обзор состояния заказов и загрузки сотрудников.</p>
+            <p class="page-subtitle">
+              Краткий обзор состояния заказов и загрузки сотрудников.
+            </p>
           </div>
 
-          <div class="grid grid-3">
+          <!-- KPI-карточки -->
+          <div class="grid grid-3 dashboard-kpis">
+
             <div class="card">
               <div class="card-header">
                 <div>
@@ -550,51 +671,93 @@
                    style="font-size: 2rem; font-weight: 600;">0</div>
             </div>
           </div>
+
+          <!-- Диаграммы по заказам -->
+          <div class="grid grid-2 dashboard-charts">
+            <div class="card chart-card">
+              <div class="card-header">
+                <h3 class="card-title">Заказы по статусам</h3>
+                <span class="muted" style="font-size: 0.8rem;">
+                  new / ready / canceled
+                </span>
+              </div>
+              <div class="chart-wrapper">
+                <canvas id="orders-status-chart"></canvas>
+              </div>
+            </div>
+
+            <div class="card chart-card">
+              <div class="card-header">
+                <h3 class="card-title">Заказы по подразделениям</h3>
+                <span class="muted" style="font-size: 0.8rem;">
+                  распределение количества заказов
+                </span>
+              </div>
+              <div class="chart-wrapper">
+                <canvas id="orders-department-chart"></canvas>
+              </div>
+            </div>
+          </div>
         </section>
 
-        <!-- 3. Список заказов -->
+
+                <!-- 3. Список заказов -->
         <section id="screen-orders-list" class="screen">
           <div class="page-header">
             <h2 class="page-title">Заказы — список</h2>
             <p class="page-subtitle">Данные берутся из REST API /api/v1/orders/.</p>
           </div>
 
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Фильтры</h3>
-              <button class="btn btn-secondary btn-sm" id="orders-reset">Сбросить</button>
-            </div>
+          <!-- Фильтры + мини-график -->
+          <div class="orders-head-grid">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Фильтры</h3>
+                <button class="btn btn-secondary btn-sm" id="orders-reset">Сбросить</button>
+              </div>
 
-            <div class="form-grid">
-              <div class="form-field">
-                <label>Статус</label>
+              <div class="form-grid">
+                <div class="form-field">
+                  <label>Статус</label>
                   <select id="orders-status-filter">
                     <option value="">Все</option>
                     <option value="new">Новый</option>
                     <option value="ready">Готовый</option>
                     <option value="canceled">Отменён</option>
                   </select>
-              </div>
+                </div>
 
-              <div class="form-field">
-                <label>Дата с</label>
-                <input type="date" id="orders-date-from">
-              </div>
+                <div class="form-field">
+                  <label>Дата с</label>
+                  <input type="date" id="orders-date-from">
+                </div>
 
-              <div class="form-field">
-                <label>Дата по</label>
-                <input type="date" id="orders-date-to">
-              </div>
+                <div class="form-field">
+                  <label>Дата по</label>
+                  <input type="date" id="orders-date-to">
+                </div>
 
-              <div class="form-field">
-                <label>Клиент (по идентификатору)</label>
-                <input type="text" id="orders-client-filter"
-                       placeholder="Например: 1, 2, ...">
+                <div class="form-field">
+                  <label>Клиент (по идентификатору)</label>
+                  <input type="text" id="orders-client-filter"
+                         placeholder="Например: 1, 2, ...">
+                </div>
+              </div>
+            </div>
+
+            <div class="card chart-card">
+              <div class="card-header">
+                <h3 class="card-title">Динамика заказов по датам</h3>
+                <span class="muted" style="font-size:0.8rem;">по текущей выборке</span>
+              </div>
+              <div class="chart-wrapper">
+                <canvas id="orders-by-date-chart"></canvas>
               </div>
             </div>
           </div>
 
-          <div class="card" style="margin-top:1rem;">
+          <!-- Таблица заказов на всю ширину -->
+          <div class="card">
             <div class="card-header">
               <h3 class="card-title">Результаты</h3>
               <span class="muted" style="font-size:0.8rem;">Клик по строке — открыть карточку заказа</span>
@@ -620,7 +783,6 @@
             </div>
           </div>
         </section>
-
         <!-- 4. Карточка заказа -->
         <section id="screen-order-card" class="screen">
           <div class="page-header">
@@ -628,70 +790,72 @@
             <p class="page-subtitle">Заполняется при выборе строки в списке заказов.</p>
           </div>
 
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title" id="order-card-title">Заказ не выбран</h3>
+          <div class="order-card-grid">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title" id="order-card-title">Заказ не выбран</h3>
+              </div>
+
+              <div class="form-grid">
+                <div class="form-field">
+                  <label>Номер заказа</label>
+                  <input id="order-card-number" readonly>
+                </div>
+                <div class="form-field">
+                  <label>Дата создания</label>
+                  <input id="order-card-date" readonly>
+                </div>
+                <div class="form-field">
+                  <label>Клиент (ID)</label>
+                  <input id="order-card-client" readonly>
+                </div>
+                <div class="form-field">
+                  <label>Ответственный менеджер (ID)</label>
+                  <input id="order-card-manager" readonly>
+                </div>
+                <div class="form-field">
+                  <label>Подразделение</label>
+                  <input id="order-card-department" readonly>
+                </div>
+                <div class="form-field">
+                  <label>Статус</label>
+                  <input id="order-card-status" readonly>
+                </div>
+                <div class="form-field">
+                  <label>Приоритет</label>
+                  <input id="order-card-priority" readonly>
+                </div>
+                <div class="form-field">
+                  <label>Плановая дата выполнения</label>
+                  <input id="order-card-planned" readonly>
+                </div>
+                <div class="form-field">
+                  <label>Сумма заказа</label>
+                  <input id="order-card-amount" readonly>
+                </div>
+              </div>
             </div>
 
-            <div class="form-grid">
-              <div class="form-field">
-                <label>Номер заказа</label>
-                <input id="order-card-number" readonly>
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Состав заказа</h3>
               </div>
-              <div class="form-field">
-                <label>Дата создания</label>
-                <input id="order-card-date" readonly>
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                  <tr>
+                    <th>Наименование</th>
+                    <th>Кол-во</th>
+                    <th>Ед.</th>
+                    <th>Цена</th>
+                    <th>Сумма</th>
+                  </tr>
+                  </thead>
+                  <tbody id="order-items-tbody">
+                  <!-- позиции заказа -->
+                  </tbody>
+                </table>
               </div>
-              <div class="form-field">
-                <label>Клиент (ID)</label>
-                <input id="order-card-client" readonly>
-              </div>
-              <div class="form-field">
-                <label>Ответственный менеджер (ID)</label>
-                <input id="order-card-manager" readonly>
-              </div>
-              <div class="form-field">
-                <label>Подразделение</label>
-                <input id="order-card-department" readonly>
-              </div>
-              <div class="form-field">
-                <label>Статус</label>
-                <input id="order-card-status" readonly>
-              </div>
-              <div class="form-field">
-                <label>Приоритет</label>
-                <input id="order-card-priority" readonly>
-              </div>
-              <div class="form-field">
-                <label>Плановая дата выполнения</label>
-                <input id="order-card-planned" readonly>
-              </div>
-              <div class="form-field">
-                <label>Сумма заказа</label>
-                <input id="order-card-amount" readonly>
-              </div>
-            </div>
-          </div>
-
-          <div class="card" style="margin-top:1rem;">
-            <div class="card-header">
-              <h3 class="card-title">Состав заказа</h3>
-            </div>
-            <div class="table-wrapper">
-              <table>
-                <thead>
-                <tr>
-                  <th>Наименование</th>
-                  <th>Кол-во</th>
-                  <th>Ед.</th>
-                  <th>Цена</th>
-                  <th>Сумма</th>
-                </tr>
-                </thead>
-                <tbody id="order-items-tbody">
-                <!-- позиции заказа -->
-                </tbody>
-              </table>
             </div>
           </div>
         </section>
@@ -763,39 +927,52 @@
           </div>
         </section>
 
-        <!-- 6. Сотрудники — список -->
+                <!-- 6. Сотрудники — список -->
         <section id="screen-employees-list" class="screen">
           <div class="page-header">
             <h2 class="page-title">Сотрудники — список</h2>
             <p class="page-subtitle">Данные из REST API /api/v1/employees/.</p>
           </div>
 
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Все сотрудники</h3>
-              <span class="muted" style="font-size:0.8rem;">
-                Клик по строке — открыть карточку сотрудника
-              </span>
+          <div class="grid grid-2">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Все сотрудники</h3>
+                <span class="muted" style="font-size:0.8rem;">
+                  Клик по строке — открыть карточку сотрудника
+                </span>
+              </div>
+              <div class="table-wrapper">
+                <table>
+                  <thead>
+                  <tr>
+                    <th>ФИО</th>
+                    <th>Таб. номер</th>
+                    <th>Должность</th>
+                    <th>Подразделение</th>
+                    <th>Телефон</th>
+                    <th>Статус</th>
+                  </tr>
+                  </thead>
+                  <tbody id="employees-tbody">
+                  <!-- сотрудники -->
+                  </tbody>
+                </table>
+              </div>
             </div>
-            <div class="table-wrapper">
-              <table>
-                <thead>
-                <tr>
-                  <th>ФИО</th>
-                  <th>Таб. номер</th>
-                  <th>Должность</th>
-                  <th>Подразделение</th>
-                  <th>Телефон</th>
-                  <th>Статус</th>
-                </tr>
-                </thead>
-                <tbody id="employees-tbody">
-                <!-- сотрудники -->
-                </tbody>
-              </table>
+
+            <div class="card chart-card">
+              <div class="card-header">
+                <h3 class="card-title">Сотрудники по подразделениям</h3>
+                <span class="muted" style="font-size:0.8rem;">по текущему списку</span>
+              </div>
+              <div class="chart-wrapper">
+                <canvas id="employees-dept-chart"></canvas>
+              </div>
             </div>
           </div>
         </section>
+
 
         <!-- 7. Карточка сотрудника -->
         <section id="screen-employee-card" class="screen">
@@ -979,6 +1156,14 @@ document.addEventListener('DOMContentLoaded', () => {
     ready: 'Готов',
     canceled: 'Отменён',
   };
+const COLORS = {
+  primary: '#6366F1',        // основной акцент
+  primarySoft: 'rgba(99,102,241,0.2)',
+  success: '#22C55E',
+  warning: '#FACC15',
+  danger: '#EF4444',
+  neutral: '#4B5563'
+};
 
   let isAuthenticated = false;
   let cachedOrders = [];
@@ -986,6 +1171,10 @@ document.addEventListener('DOMContentLoaded', () => {
   let cachedReports = [];
   let selectedOrder = null;
   let selectedEmployee = null;
+  let ordersStatusChart = null;
+  let ordersDeptChart = null;
+  let ordersByDateChart = null;
+  let employeesDeptChart = null;
 
   // ===== Селекторы =====
   const buttons = document.querySelectorAll('.nav-button');
@@ -1092,17 +1281,33 @@ document.addEventListener('DOMContentLoaded', () => {
     let active = 0;
     let overdue = 0;
 
+    // агрегаты для диаграмм
+    const statusCounts = { new: 0, ready: 0, canceled: 0 };
+    const departmentCounts = {};
+
     orders.forEach(o => {
       const status = o.status || 'new';
 
       // активные = все кроме отменённых
       if (status !== 'canceled') active++;
 
-      // просроченные = есть плановая дата в прошлом и статус не "готов"/"отменён"
+      // просроченные = есть плановая дата в прошлом и статус "new"
       if (o.planned_date && status === 'new') {
         const planned = new Date(o.planned_date);
         if (planned < today) overdue++;
       }
+
+      // считаем по статусам
+      if (statusCounts[status] !== undefined) {
+        statusCounts[status] += 1;
+      }
+
+      // считаем по подразделениям
+      const dep = o.department || 'Не указано';
+      if (!departmentCounts[dep]) {
+        departmentCounts[dep] = 0;
+      }
+      departmentCounts[dep] += 1;
     });
 
     const online = employees.filter(e => e.status === 'Активен').length;
@@ -1114,6 +1319,175 @@ document.addEventListener('DOMContentLoaded', () => {
     if (activeEl) activeEl.textContent = active;
     if (overdueEl) overdueEl.textContent = overdue;
     if (onlineEl) onlineEl.textContent = online;
+
+    // рисуем/обновляем диаграммы
+    renderDashboardCharts(statusCounts, departmentCounts);
+  }
+
+  function renderDashboardCharts(statusCounts, departmentCounts) {
+    const statusCanvas = document.getElementById('orders-status-chart');
+    const deptCanvas = document.getElementById('orders-department-chart');
+
+    if (!statusCanvas || !deptCanvas) {
+      return;
+    }
+
+    // --- Диаграмма по статусам ---
+    const statusKeys = ['new', 'ready', 'canceled'];
+    const statusLabels = statusKeys.map(k => STATUS_LABELS[k] || k);
+    const statusData = statusKeys.map(k => statusCounts[k] || 0);
+
+    if (ordersStatusChart) {
+      // обновляем данные
+      ordersStatusChart.data.labels = statusLabels;
+      ordersStatusChart.data.datasets[0].data = statusData;
+      ordersStatusChart.update();
+    } else {
+      ordersStatusChart = new Chart(statusCanvas.getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: statusLabels,
+          datasets: [
+            {
+              label: 'Количество заказов',
+              data: statusData,
+              backgroundColor: [COLORS.primary, COLORS.success, COLORS.danger]
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false,
+            },
+            tooltip: {
+              callbacks: {
+                label: ctx => `Заказов: ${ctx.parsed.y}`,
+              },
+            },
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                precision: 0,
+              },
+            },
+          },
+        },
+      });
+    }
+
+    // --- Диаграмма по подразделениям ---
+    const deptLabels = Object.keys(departmentCounts);
+    const deptData = deptLabels.map(d => departmentCounts[d]);
+
+    if (ordersDeptChart) {
+      ordersDeptChart.data.labels = deptLabels;
+      ordersDeptChart.data.datasets[0].data = deptData;
+      ordersDeptChart.update();
+    } else {
+      ordersDeptChart = new Chart(deptCanvas.getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: deptLabels,
+          datasets: [
+            {
+              label: 'Количество заказов',
+              data: deptData,
+              backgroundColor: COLORS.primary
+            },
+          ],
+        },
+        options: {
+          indexAxis: 'y', // горизонтальные столбики
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              display: false,
+            },
+            tooltip: {
+              callbacks: {
+                label: ctx => `Заказов: ${ctx.parsed.x}`,
+              },
+            },
+          },
+          scales: {
+            x: {
+              beginAtZero: true,
+              ticks: {
+                precision: 0,
+              },
+            },
+          },
+        },
+      });
+    }
+  }
+  function renderOrdersCharts(orders) {
+    const canvas = document.getElementById('orders-by-date-chart');
+    if (!canvas) return;
+
+    const counts = {};
+    orders.forEach(o => {
+      if (!o.date) return;
+      counts[o.date] = (counts[o.date] || 0) + 1;
+    });
+
+    const labels = Object.keys(counts).sort();
+    const data = labels.map(d => counts[d]);
+
+    // если данных нет — удаляем график
+    if (!labels.length) {
+      if (ordersByDateChart) {
+        ordersByDateChart.destroy();
+        ordersByDateChart = null;
+      }
+      return;
+    }
+
+    if (ordersByDateChart) {
+      ordersByDateChart.data.labels = labels;
+      ordersByDateChart.data.datasets[0].data = data;
+      ordersByDateChart.update();
+    } else {
+      ordersByDateChart = new Chart(canvas.getContext('2d'), {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            label: 'Количество заказов',
+            data,
+            tension: 0.3,
+            fill: true,
+            backgroundColor: COLORS.primarySoft,
+            borderColor: COLORS.primary,
+            pointRadius: 3
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              callbacks: {
+                label: ctx => `Заказов: ${ctx.parsed.y}`
+              }
+            }
+          },
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: { precision: 0 }
+            }
+          }
+        }
+      });
+    }
   }
 
   // ===== Заказы — список =====
@@ -1132,7 +1506,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  function renderOrdersTable(orders) {
+    function renderOrdersTable(orders) {
     const tbody = document.getElementById('orders-tbody');
     if (!tbody) return;
 
@@ -1142,6 +1516,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const tr = document.createElement('tr');
       tr.innerHTML = '<td colspan="8" style="color:#9ca3af;">Нет данных для отображения</td>';
       tbody.appendChild(tr);
+      // обновим график пустыми данными
+      renderOrdersCharts([]);
       return;
     }
 
@@ -1170,6 +1546,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
       tbody.appendChild(tr);
     });
+
+    // один раз после заполнения таблицы
+    renderOrdersCharts(orders);
   }
 
   async function loadOrders() {
@@ -1258,6 +1637,8 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       tbody.appendChild(tr);
     });
+        renderEmployeesCharts(employees);
+
   }
 
   async function loadEmployees() {
@@ -1282,6 +1663,63 @@ document.addEventListener('DOMContentLoaded', () => {
     byId('employee-card-phone').value = selectedEmployee.phone || '';
     byId('employee-card-email').value = selectedEmployee.email || '';
     byId('employee-card-status').value = selectedEmployee.status || '';
+  }
+  function renderEmployeesCharts(employees) {
+    const canvas = document.getElementById('employees-dept-chart');
+    if (!canvas) return;
+
+    const counts = {};
+    employees.forEach(e => {
+      const dep = e.department || 'Без подразделения';
+      counts[dep] = (counts[dep] || 0) + 1;
+    });
+
+    const labels = Object.keys(counts);
+    const data = labels.map(l => counts[l]);
+
+    if (!labels.length) {
+      if (employeesDeptChart) {
+        employeesDeptChart.destroy();
+        employeesDeptChart = null;
+      }
+      return;
+    }
+
+    const palette = [COLORS.primary, COLORS.success, COLORS.warning, COLORS.danger];
+    const colors = labels.map((_, i) => palette[i % palette.length]);
+
+    if (employeesDeptChart) {
+      employeesDeptChart.data.labels = labels;
+      employeesDeptChart.data.datasets[0].data = data;
+      employeesDeptChart.data.datasets[0].backgroundColor = colors;
+      employeesDeptChart.update();
+    } else {
+      employeesDeptChart = new Chart(canvas.getContext('2d'), {
+        type: 'doughnut',
+        data: {
+          labels,
+          datasets: [{
+            data,
+            backgroundColor: colors
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'bottom',
+              labels: { boxWidth: 12 }
+            },
+            tooltip: {
+              callbacks: {
+                label: ctx => `${ctx.label}: ${ctx.parsed} сотрудн.`
+              }
+            }
+          }
+        }
+      });
+    }
   }
 
   // ===== Отчёты =====
