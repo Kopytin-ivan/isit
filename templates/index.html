@@ -878,17 +878,20 @@
                 <input id="order-new-number" placeholder="ORD-2025-119">
               </div>
               <div class="form-field">
-                <label>Клиент (ID)</label>
-                <input id="order-new-client" placeholder="1">
+                <label>Клиент</label>
+                <select id="order-new-client"></select>
               </div>
+
               <div class="form-field">
                 <label>Подразделение</label>
-                <input id="order-new-department" placeholder="Служба сбыта">
+                <select id="order-new-department"></select>
               </div>
+
               <div class="form-field">
-                <label>Менеджер (ID)</label>
-                <input id="order-new-manager" placeholder="1">
+                <label>Менеджер</label>
+                <select id="order-new-manager"></select>
               </div>
+
               <div class="form-field">
                 <label>Статус</label>
                   <select id="order-new-status">
@@ -918,7 +921,7 @@
 
             <div class="form-actions">
               <button class="btn btn-primary btn-sm" id="order-new-save">
-                Сохранить (демо)
+                Сохранить
               </button>
               <span class="muted" style="font-size:0.8rem;">
                 В данном прототипе данные не записываются в БД, создание заказа демонстрируется в админке.
@@ -1049,6 +1052,7 @@
                   <th>Период</th>
                   <th>Формат</th>
                   <th>Статус</th>
+                  <th>Действия</th>
                 </tr>
                 </thead>
                 <tbody id="reports-tbody">
@@ -1058,7 +1062,32 @@
             </div>
           </div>
         </section>
+        <!-- 8.1 Просмотр отчёта -->
+        <section id="screen-report-detail" class="screen">
+          <div class="page-header">
+            <h2 class="page-title" id="report-detail-title">Отчёт</h2>
+            <p class="page-subtitle" id="report-detail-meta">Просмотр данных и скачивание CSV.</p>
+          </div>
 
+          <div class="card">
+            <div class="card-header" style="display:flex; align-items:center; justify-content:space-between; gap:12px;">
+              <h3 class="card-title">Данные отчёта</h3>
+              <div style="display:flex; gap:8px;">
+                <button class="btn btn-ghost btn-sm" id="report-detail-back">Назад к списку</button>
+                <button class="btn btn-primary btn-sm" id="report-detail-download">Скачать CSV</button>
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr id="report-detail-thead"></tr>
+                </thead>
+                <tbody id="report-detail-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
         <!-- 9. Создание отчёта -->
         <section id="screen-report-new" class="screen">
           <div class="page-header">
@@ -1091,13 +1120,14 @@
               <div class="form-field">
                 <label>Формат</label>
                 <select id="report-format">
-                  <option value="PDF">PDF</option>
-                  <option value="XLSX">XLSX</option>
+                  <option value="CSV">CSV</option>
                 </select>
               </div>
               <div class="form-field">
                 <label>Группировка</label>
-                <input id="report-grouping" placeholder="По клиентам / по менеджерам">
+                <select id="report-grouping"></select>
+
+
               </div>
             </div>
 
@@ -1147,7 +1177,8 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+
   // ===== Константы и кеши =====
   const API_BASE = '/api/v1';
 
@@ -1169,12 +1200,16 @@ const COLORS = {
   let cachedOrders = [];
   let cachedEmployees = [];
   let cachedReports = [];
+  let cachedClients = [];
+  let currentUser = null;
+
   let selectedOrder = null;
   let selectedEmployee = null;
   let ordersStatusChart = null;
   let ordersDeptChart = null;
   let ordersByDateChart = null;
   let employeesDeptChart = null;
+  let selectedReportId = null;
 
   // ===== Селекторы =====
   const buttons = document.querySelectorAll('.nav-button');
@@ -1196,7 +1231,24 @@ const COLORS = {
   const orderNewSave = document.getElementById('order-new-save');
 
   const reportCreateButton = document.getElementById('report-create-button');
-  const employeeSaveButton = document.getElementById('employee-save-button'); // ← ДОБАВЬ ЭТО
+  const reportTypeSelect = document.getElementById('report-type');
+  const reportGroupingSelect = document.getElementById('report-grouping');
+
+  const employeeSaveButton = document.getElementById('employee-save-button'); 
+  const reportDetailBack = document.getElementById('report-detail-back');
+  const reportDetailDownload = document.getElementById('report-detail-download');
+
+  reportDetailBack?.addEventListener('click', async () => {
+    showScreen('screen-reports-list');
+    cachedReports = [];
+    await loadReports();
+  });
+
+  reportDetailDownload?.addEventListener('click', () => {
+    if (!selectedReportId) return;
+    downloadReportCSV(selectedReportId);
+  });
+
   // ===== Общие утилиты =====
   function showScreen(id) {
     screens.forEach(s => s.classList.toggle('active', s.id === id));
@@ -1210,11 +1262,13 @@ const COLORS = {
     return 'менеджер по заказам';
   }
 
-  function setAuthState(auth, username = null) {
+  function setAuthState(auth, user = null) {
     isAuthenticated = auth;
+    currentUser = user;
+
     if (auth) {
-      userNameEl.textContent = username || 'Пользователь';
-      userRoleEl.textContent = 'роль: ' + guessRole(username);
+      userNameEl.textContent = user?.username || 'Пользователь';
+      userRoleEl.textContent = 'роль: ' + (user?.role || 'не задана');
       logoutButton.style.display = 'inline-flex';
     } else {
       userNameEl.textContent = 'Гость';
@@ -1222,6 +1276,7 @@ const COLORS = {
       logoutButton.style.display = 'none';
     }
   }
+
 
   function getCookie(name) {
     const value = `; ${document.cookie}`;
@@ -1234,17 +1289,50 @@ const COLORS = {
   async function fetchJSON(url, options = {}) {
     try {
       const resp = await fetch(url, options);
-      if (!resp.ok) {
-        console.error('Ошибка запроса', url, resp.status);
-        return { ok: false, status: resp.status, data: null };
+
+      const ct = (resp.headers.get('content-type') || '').toLowerCase();
+      let data = null;
+
+      if (ct.includes('application/json')) {
+        data = await resp.json().catch(() => null);
+      } else {
+        data = await resp.text().catch(() => null);
       }
-      const data = await resp.json();
+
+      if (!resp.ok) {
+        console.error('Ошибка запроса', url, resp.status, data);
+        return { ok: false, status: resp.status, data };
+      }
+
       return { ok: true, status: resp.status, data };
     } catch (e) {
       console.error('Ошибка сети', url, e);
-      return { ok: false, status: 0, data: null };
+      return { ok: false, status: 0, data: { detail: 'network error' } };
     }
   }
+
+
+  async function sessionLogin(username, password) {
+    const res = await fetchJSON(`${API_BASE}/auth/session/login/`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+    });
+    return res.ok ? res.data : null;
+  }
+
+  async function sessionMe() {
+    const res = await fetchJSON(`${API_BASE}/auth/session/me/`);
+    return res.ok ? res.data : null;
+  }
+
+  async function sessionLogout() {
+    await fetchJSON(`${API_BASE}/auth/session/logout/`, {
+      method: 'POST',
+      headers: { 'X-CSRFToken': getCookie('csrftoken') || '' },
+    });
+  }
+
 
   async function fetchOrders() {
     const res = await fetchJSON(`${API_BASE}/orders/`);
@@ -1268,6 +1356,104 @@ const COLORS = {
     if (res.ok) cachedReports = res.data;
     return res.data || [];
   }
+
+  async function fetchReportPreview(reportId, limit = 200) {
+    return await fetchJSON(`${API_BASE}/reports/${reportId}/preview/?limit=${limit}`);
+  }
+
+  function downloadReportCSV(reportId) {
+    // Браузер скачает файл как attachment
+    window.location.href = `${API_BASE}/reports/${reportId}/download/`;
+  }
+
+
+async function fetchClients() {
+  const res = await fetchJSON(`${API_BASE}/clients/`);
+  if (res.ok) cachedClients = res.data;
+  return res.data || [];
+}
+
+  function updateReportGroupingOptions() {
+    if (!reportTypeSelect || !reportGroupingSelect) return;
+
+    const t = reportTypeSelect.value;
+
+    reportGroupingSelect.innerHTML = '';
+
+    const add = (value, label) => {
+      const opt = document.createElement('option');
+      opt.value = value;
+      opt.textContent = label;
+      reportGroupingSelect.appendChild(opt);
+    };
+
+    add('none', 'Без группировки');
+
+    if (t === 'employees') {
+      add('department', 'По подразделениям');
+    } else {
+      add('client', 'По клиентам');
+      add('manager', 'По менеджерам');
+    }
+  }
+
+function fillSelect(selectEl, options, placeholder = 'Выберите...') {
+  if (!selectEl) return;
+  selectEl.innerHTML = '';
+  const opt0 = document.createElement('option');
+  opt0.value = '';
+  opt0.textContent = placeholder;
+  selectEl.appendChild(opt0);
+
+  options.forEach(o => {
+    const opt = document.createElement('option');
+    opt.value = String(o.value);
+    opt.textContent = o.label;
+    selectEl.appendChild(opt);
+  });
+}
+
+async function loadOrderNewLookups() {
+  const [clients, employees] = await Promise.all([
+    cachedClients?.length ? cachedClients : fetchClients(),
+    cachedEmployees.length ? cachedEmployees : fetchEmployees(),
+  ]);
+
+  // Клиенты
+  const clientSelect = document.getElementById('order-new-client');
+  fillSelect(
+    clientSelect,
+    clients.map(c => ({ value: c.id, label: c.name })),
+    'Выберите клиента'
+  );
+
+  // Менеджеры (по факту — сотрудники; позже можно фильтровать по должности/роли)
+  const managerSelect = document.getElementById('order-new-manager');
+  fillSelect(
+    managerSelect,
+    employees.map(e => ({ value: e.id, label: `${e.full_name} (ID: ${e.id})` })),
+    'Выберите менеджера'
+  );
+
+  // Подразделения из сотрудников
+  const departments = Array.from(new Set(
+    employees.map(e => (e.department || '').trim()).filter(Boolean)
+  )).sort((a,b) => a.localeCompare(b));
+
+  const depSelect = document.getElementById('order-new-department');
+  fillSelect(
+    depSelect,
+    departments.map(d => ({ value: d, label: d })),
+    'Выберите подразделение'
+  );
+
+  // Удобство: при выборе менеджера — автоподстановка подразделения
+  managerSelect?.addEventListener('change', () => {
+    const emp = employees.find(e => String(e.id) === managerSelect.value);
+    if (emp && emp.department) depSelect.value = emp.department;
+  });
+}
+
 
   // ===== Дашборд =====
   async function loadDashboard() {
@@ -1731,7 +1917,7 @@ const COLORS = {
 
     if (!reports.length) {
       const tr = document.createElement('tr');
-      tr.innerHTML = '<td colspan="5" style="color:#9ca3af;">Отчёты отсутствуют</td>';
+      tr.innerHTML = '<td colspan="6" style="color:#9ca3af;">Отчёты отсутствуют</td>';
       tbody.appendChild(tr);
       return;
     }
@@ -1752,13 +1938,27 @@ const COLORS = {
       const tr = document.createElement('tr');
       const period =
         (r.period_from || '') + (r.period_to ? ' — ' + r.period_to : '');
-      tr.innerHTML = `
-        <td>${r.title}</td>
-        <td>${typeMap[r.report_type] || r.report_type}</td>
-        <td>${period}</td>
-        <td>${r.format}</td>
-        <td>${statusMap[r.status] || r.status}</td>
-      `;
+        tr.innerHTML = `
+          <td>${r.title}</td>
+          <td>${typeMap[r.report_type] || r.report_type}</td>
+          <td>${period}</td>
+          <td>${r.format}</td>
+          <td>${statusMap[r.status] || r.status}</td>
+          <td style="white-space:nowrap;">
+            <button class="btn btn-ghost btn-sm" data-action="open">Открыть</button>
+            <button class="btn btn-ghost btn-sm" data-action="download">CSV</button>
+          </td>
+        `;
+        tr.querySelector('[data-action="open"]').addEventListener('click', async (e) => {
+        e.stopPropagation();
+        await openReportDetail(r.id);
+        });
+
+        tr.querySelector('[data-action="download"]').addEventListener('click', (e) => {
+          e.stopPropagation();
+          downloadReportCSV(r.id);
+        });
+
       tbody.appendChild(tr);
     });
   }
@@ -1767,6 +1967,55 @@ const COLORS = {
     const reports = cachedReports.length ? cachedReports : await fetchReports();
     renderReportsTable(reports);
   }
+  function renderReportDetailTable(columns, rows) {
+  const thead = document.getElementById('report-detail-thead');
+  const tbody = document.getElementById('report-detail-tbody');
+  if (!thead || !tbody) return;
+
+  thead.innerHTML = '';
+  tbody.innerHTML = '';
+
+  // Заголовки
+  columns.forEach(c => {
+    const th = document.createElement('th');
+    th.textContent = c;
+    thead.appendChild(th);
+  });
+
+  // Строки
+  if (!rows || !rows.length) {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td colspan="${columns.length || 1}" style="color:#9ca3af;">Нет данных</td>`;
+    tbody.appendChild(tr);
+    return;
+  }
+
+  rows.forEach(r => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = columns.map(c => `<td>${r[c] ?? ''}</td>`).join('');
+    tbody.appendChild(tr);
+  });
+  }
+
+  async function openReportDetail(reportId) {
+    selectedReportId = reportId;
+
+    const res = await fetchReportPreview(reportId, 200);
+    if (!res.ok) {
+      alert('Не удалось открыть отчёт: ' + (res.data?.detail || 'ошибка'));
+      return;
+    }
+
+    const titleEl = document.getElementById('report-detail-title');
+    const metaEl = document.getElementById('report-detail-meta');
+
+    titleEl.textContent = res.data.title || 'Отчёт';
+    metaEl.textContent = `Тип: ${res.data.report_type}, группировка: ${res.data.grouping || 'none'}, формат: ${res.data.format}, строк: ${res.data.rows_count ?? res.data.rows?.length ?? 0}`;
+
+    renderReportDetailTable(res.data.columns || [], res.data.rows || []);
+    showScreen('screen-report-detail');
+  }
+
 // ===== Сохранение сотрудника =====
 async function saveEmployee() {
   if (!selectedEmployee) {
@@ -1835,7 +2084,8 @@ async function saveEmployee() {
     if (res.ok) {
       alert('Отчёт успешно создан.');
       cachedReports = [];
-      loadReports();
+      await loadReports();
+      showScreen('screen-reports-list');
     } else {
       alert('Не удалось создать отчёт. Скорее всего, нет прав (нужно войти в /admin/).');
     }
@@ -1895,15 +2145,26 @@ async function saveEmployee() {
   // ===== Обработчики UI =====
 
   // стартовое состояние
-  setAuthState(false);
-  showScreen('screen-login');
+  const me = await sessionMe();
+  if (me) {
+    setAuthState(true, me);
+    showScreen('screen-dashboard');
+    await loadDashboard();
+  } else {
+    setAuthState(false);
+    showScreen('screen-login');
+  }
+  reportTypeSelect?.addEventListener('change', () => {
+    updateReportGroupingOptions();
+  });
+
 
   // навигация по вкладкам
   buttons.forEach(btn => {
     // Администрирование обрабатываем отдельно
     if (btn.id === 'admin-nav-button') return;
 
-    btn.addEventListener('click', () => {
+    btn.addEventListener('click', async () => {
       const target = btn.dataset.screen;
       const requiresAuth =
         btn.dataset.requires_auth === '1' || btn.dataset.requiresAuth === '1';
@@ -1924,7 +2185,12 @@ async function saveEmployee() {
         loadEmployees();
       } else if (target === 'screen-reports-list') {
         loadReports();
+      } else if (target === 'screen-order-new') {
+        await loadOrderNewLookups();
+      } else if (target === 'screen-report-new') {
+        updateReportGroupingOptions();
       }
+
     });
   });
 
@@ -1955,24 +2221,32 @@ async function saveEmployee() {
 
   // "Войти" — псевдо-логин (настоящая авторизация через /admin/)
   if (loginButton) {
-    loginButton.addEventListener('click', () => {
-      const loginInput = document.getElementById('login-username');
-      const loginValue = loginInput ? loginInput.value.trim() : '';
+    loginButton.addEventListener('click', async () => {
+      const username = (document.getElementById('login-username')?.value || '').trim();
+      const password = (document.getElementById('login-password')?.value || '');
 
-      if (!loginValue) {
-        alert('Введите логин (можно admin и т.п.).');
+      if (!username || !password) {
+        alert('Введите логин и пароль.');
         return;
       }
 
-      setAuthState(true, loginValue);
+      const user = await sessionLogin(username, password);
+      if (!user) {
+        alert('Не удалось войти. Проверьте логин/пароль.');
+        return;
+      }
+
+      setAuthState(true, user);
       showScreen('screen-dashboard');
-      loadDashboard();
+      await loadDashboard();
     });
+
   }
 
   // "Выйти"
   if (logoutButton) {
-    logoutButton.addEventListener('click', () => {
+    logoutButton.addEventListener('click', async () => {
+      await sessionLogout();
       setAuthState(false);
       showScreen('screen-login');
     });
@@ -1980,12 +2254,19 @@ async function saveEmployee() {
 
   // Сохранение нового заказа
   if (orderNewSave) {
-    orderNewSave.addEventListener('click', () => {
+    orderNewSave.addEventListener('click', async () => {
       if (!isAuthenticated) {
-        alert('Для создания заказа войдите в систему и в /admin/.');
+        alert('Сначала войдите в систему.');
         return;
       }
-      createOrder();
+
+      const canEdit = !!currentUser?.permissions?.can_edit_orders || !!currentUser?.permissions?.is_admin;
+      if (!canEdit) {
+        alert('У вашей роли нет прав на создание заказов.');
+        return;
+      }
+
+      await createOrder();
     });
   }
 

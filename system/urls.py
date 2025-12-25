@@ -14,13 +14,15 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.views.generic import TemplateView
 from django.contrib import admin
-from django.urls import path
-
-# urls.py
 from django.urls import path, include
+from django.views.generic import TemplateView
+from django.views.decorators.csrf import ensure_csrf_cookie
+
 from rest_framework.routers import DefaultRouter
+from django.conf import settings
+from django.conf.urls.static import static
+
 from orders.views import (
     OrderViewSet,
     OrderItemViewSet,
@@ -33,6 +35,9 @@ from users.views import (
     RoleViewSet,
     EmployeeViewSet,
     ClientViewSet,
+    SessionLoginView,
+    SessionLogoutView,
+    SessionMeView,
 )
 
 
@@ -48,9 +53,14 @@ router.register(r"integrations", IntegrationViewSet)
 router.register(r"dictionaries/order-statuses", OrderStatusDictViewSet)
 
 urlpatterns = [
-    path("", TemplateView.as_view(template_name="index.html"), name="home"),
+    path("", ensure_csrf_cookie(TemplateView.as_view(template_name="index.html")), name="home"),
     path("admin/", admin.site.urls),
     path("api/v1/", include(router.urls)),
     path("api/v1/auth/", include("djoser.urls")),
+    path("api/v1/auth/session/login/", SessionLoginView.as_view()),
+    path("api/v1/auth/session/logout/", SessionLogoutView.as_view()),
+    path("api/v1/auth/session/me/", SessionMeView.as_view()),
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
